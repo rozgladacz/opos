@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Rozpiski — OPOS{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Kalkulator</p><h1>Rozpiski</h1><p>Jeden wpis może reprezentować kilka identycznych oddziałów korzystających ze wspólnego profilu.</p></div><a class="button button-primary" href="/rosters/new">Nowa rozpiska</a></div>
+{% if rosters %}<div class="roster-list">
+{% for row in roster_rows %}{% set roster = row.roster %}<article class="roster-list-card"><a href="/rosters/{{ roster.id }}"><h2>{{ roster.name }}</h2><p>{{ roster.roster_units|length }} profili · {{ row.total_cost }} pkt{% if row.points_limit is not none %} / {{ row.points_limit }}{% endif %}</p></a><div class="row-actions"><a class="button" href="/rosters/{{ roster.id }}/cards">Karty</a><form method="post" action="/rosters/{{ roster.id }}/duplicate"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button" type="submit">Duplikuj</button></form><form method="post" action="/rosters/{{ roster.id }}/delete" data-confirm="Usunąć tę rozpiskę?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-danger" type="submit">Usuń</button></form></div></article>{% endfor %}
+</div>{% else %}<div class="empty-state panel">Nie masz jeszcze rozpiski.</div>{% endif %}
+{% endblock %}

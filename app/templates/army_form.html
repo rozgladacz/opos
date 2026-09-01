@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Nowa Armia — OPOS{% endblock %}
+{% block content %}
+<section class="form-panel narrow"><p class="eyebrow">Biblioteka</p><h1>Nowa Armia</h1>
+  <form method="post" action="/armies" class="stack-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Nazwa Armii<input name="name" maxlength="120" required autofocus></label>
+    <div class="form-actions"><a class="button button-quiet" href="/armies">Anuluj</a><button class="button button-primary" type="submit">Utwórz</button></div>
+  </form>
+</section>
+{% endblock %}

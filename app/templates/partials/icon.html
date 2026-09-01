@@ -1,0 +1,6 @@
+{% macro icon(name, label='', value=None, class_name='') -%}
+<span class="icon-wrap {{ class_name }}"{% if label %} aria-label="{{ label }}" role="img"{% else %} aria-hidden="true"{% endif %}>
+  <svg class="opos-icon" viewBox="0 0 24 24"><use href="{{ url_for('static', path='icons/opos.svg') }}#icon-{{ name }}"></use></svg>
+  {% if value is not none %}<span class="icon-value">{{ value }}</span>{% endif %}
+</span>
+{%- endmacro %}

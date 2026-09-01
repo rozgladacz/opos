@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Nowa rozpiska — OPOS{% endblock %}
+{% block content %}
+<section class="form-panel narrow"><p class="eyebrow">Kalkulator</p><h1>Nowa rozpiska</h1>
+  <form method="post" action="/rosters" class="stack-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Nazwa rozpiski<input name="name" maxlength="120" required autofocus></label>
+    <label>Armia <span class="optional">opcjonalnie, jako biblioteka</span><select name="army_id"><option value="">Bez przypisanej Armii</option>{% for army in armies %}<option value="{{ army.id }}">{{ army.name }}</option>{% endfor %}</select></label>
+    <label><span class="points-limit-label">Limit punktów, bez skalowania</span> <span class="optional">opcjonalnie</span><input name="points_limit" type="number" min="1" step="1"></label>
+    <details class="additional-settings">
+      <summary>Dodatkowe ustawienia</summary>
+      <div class="additional-settings-grid">
+        <label class="toggle-row"><input name="custom_stats_enabled" type="checkbox" value="true" {% if user.default_custom_stats_enabled %}checked{% endif %}><span><strong>Dowolne statystyki</strong><small>Pozwala wyjść poza standardowe wartości Zbroi, Życia i Siły.</small></span></label>
+        <div class="scale-row"><input class="scale-toggle" id="new-points-scaling-enabled" name="points_scaling_enabled" type="checkbox" value="true" {% if user.default_points_scale != 1 %}checked{% endif %}><label class="scale-copy" for="new-points-scaling-enabled"><strong>Skalowanie punktów</strong><small>Dzieli punkty przez wpisaną wartość.</small></label><input class="scale-value" name="points_scale" type="number" min="1" max="1000000" step="1" value="{{ user.default_points_scale if user.default_points_scale != 1 else 10 }}" aria-label="Wartość skalowania punktów" required></div>
+        <label class="toggle-row"><input name="collapse_descriptions" type="checkbox" value="true" {% if user.default_collapse_descriptions %}checked{% endif %}><span><strong>Zwiń opisy</strong><small>Pokazuje symbole i nazwy zdolności bez pełnych opisów.</small></span></label>
+        <label class="toggle-row"><input name="small_battle_enabled" type="checkbox" value="true" {% if user.default_small_battle_enabled %}checked{% endif %}><span><strong>Mała bitwa</strong><small>Podwaja standardowe wartości Życia.</small></span></label>
+        <label class="toggle-row"><input name="shield_fist_enabled" type="checkbox" value="true" {% if user.default_shield_fist_enabled %}checked{% endif %}><span><strong>Tarcza i Pięść</strong><small>Pokazuje Zbroję jako Tarczę, a Siłę jako Pięść.</small></span></label>
+        <label class="toggle-row save-defaults"><input name="save_as_defaults" type="checkbox" value="true"><span><strong>Zapisz jako domyślne</strong><small>Użyj tych ustawień przy tworzeniu kolejnych rozpisk.</small></span></label>
+      </div>
+    </details>
+    <div class="form-actions"><a class="button button-quiet" href="/rosters">Anuluj</a><button class="button button-primary" type="submit">Utwórz rozpiskę</button></div>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,19 @@
+# Podstawowe zależności aplikacji FastAPI
+fastapi==0.110.3
+uvicorn[standard]==0.29.0
+jinja2==3.1.4
+sqlalchemy==2.0.48
+alembic==1.13.2
+python-multipart==0.0.9
+passlib[bcrypt]==1.7.4
+itsdangerous==2.2.0
+
+# Statyczne karty HTML/PDF
+weasyprint==69.0
+
+# Konfiguracja
+python-dotenv==1.0.1
+
+# Jedyny wykonywalny ruleset OPOS YAML
+pydantic>=2.0,<3.0
+PyYAML>=6.0,<7.0

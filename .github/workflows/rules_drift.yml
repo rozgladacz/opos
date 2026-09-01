@@ -1,0 +1,36 @@
+name: OPOS Rules Drift
+
+on:
+  pull_request:
+    paths:
+      - 'app/static/docs/OPOS.docx'
+      - 'app/static/docs/OPOS.pdf'
+      - 'app/rulesets/opos/**'
+      - 'app/static/icons/opos.svg'
+      - 'scripts/opos_rules_check.py'
+      - 'Makefile'
+      - '.github/workflows/rules_drift.yml'
+  push:
+    branches: ['main']
+    paths:
+      - 'app/static/docs/OPOS.docx'
+      - 'app/static/docs/OPOS.pdf'
+      - 'app/rulesets/opos/**'
+      - 'app/static/icons/opos.svg'
+      - 'scripts/opos_rules_check.py'
+
+jobs:
+  drift-check:
+    name: DOCX / PDF / YAML / SVG
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      - name: Check OPOS rules
+        run: make opos-rules-check

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  {% if csrf_token %}<meta name="csrf-token" content="{{ csrf_token }}">{% endif %}
+  <title>{% block title %}OPOS{% endblock %}</title>
+  <link rel="icon" href="{{ url_for('static', path='favicon.svg') }}">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}?v=opos-v1.7">
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main">Przejdź do treści</a>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="OPOS — strona główna">
+      <span class="brand-mark">O</span><span>OPOS</span>
+    </a>
+    {% if user %}
+    <nav aria-label="Główna nawigacja">
+      <a href="/rosters">Rozpiski</a>
+      <a href="/armies">Armie</a>
+      <a href="/static/docs/OPOS.pdf" target="_blank" rel="noopener">Zasady</a>
+      {% if user.is_admin %}<a href="/users">Użytkownicy</a><a href="/admin">Administracja</a>{% endif %}
+    </nav>
+    <form class="logout-form" method="post" action="/auth/logout">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <span class="user-name">{{ user.username }}</span>
+      <button class="button button-quiet" type="submit">Wyloguj</button>
+    </form>
+    {% endif %}
+  </header>
+  <main id="main" class="page-shell">
+    {% block content %}{% endblock %}
+  </main>
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+  <script src="{{ url_for('static', path='js/opos.js') }}?v=opos-v1.8" defer></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

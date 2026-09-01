@@ -1,0 +1,38 @@
+# Kontrola wersji i narzędzia deweloperskie
+.git/
+.github/
+.claude/
+.tools/
+.venv/
+.venv*/
+
+# Dane runtime — wolumen Docker zastąpi zawartość /app/data
+data/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.bak
+
+# Testy i dokumentacja deweloperska
+tests/
+docs/
+scripts/profile_quote.py
+scripts/reflect_and_improve.py
+FRICTION_REPORT.md
+README_INTEGRATION.md
+AGENTS.md
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Pliki tymczasowe i logi
+*.log
+*.tmp
+.env
+.env.*
+!.env.example

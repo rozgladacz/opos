@@ -1,0 +1,16 @@
+services:
+  opos-app:
+    build:
+      context: .
+    image: opos:dev
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    ports:
+      - "127.0.0.1:${OPOS_DEV_PORT:-8002}:8000"
+    # !override usuwa produkcyjny mount socketu Dockera i katalog danych.
+    volumes: !override
+      - ./.dev-data:/app/data
+      - ./app:/app/app:ro
+    environment:
+      DEBUG: "true"
+      SESSION_HTTPS_ONLY: "false"
+      TRUSTED_HOSTS: "opos.localhost,localhost,127.0.0.1"

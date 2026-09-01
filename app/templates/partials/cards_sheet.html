@@ -1,0 +1,32 @@
+{% macro card_icon(name, label='', value=None) -%}
+<span class="card-icon-wrap"{% if label %} aria-label="{{ label }}" role="img"{% else %} aria-hidden="true"{% endif %}>
+  {{ opos_icon_svg(name) }}
+  {% if value is not none %}<span class="card-icon-value">{{ value }}</span>{% endif %}
+</span>
+{%- endmacro %}
+
+{% for page in pages %}
+<section class="card-sheet">
+  {% for card in page %}
+  <div class="card-cell">
+    {% if card %}
+    <article class="unit-card unit-card-{{ card.kind }}{% if card.kind == 'profile' and card.attack_abilities and not roster.collapse_descriptions %} has-attack-descriptions{% endif %}">
+      <header class="card-header"><div class="card-title{% if card.name|length > 18 %} is-long{% endif %}"><span class="card-kicker">{% if card.kind == 'profile' %}Profil oddziału{% else %}Kontynuacja {{ card.continuation_number }}{% endif %}</span><h1>{{ card.name }}</h1></div>{% if card.kind == 'profile' %}<div class="card-stats">{{ card_icon('defense',card.defense_label ~ ' ' ~ card.defense,card.defense) }}{{ card_icon('toughness','Życie ' ~ card.toughness,card.toughness) }}</div>{% endif %}<div class="card-cost-group"><span class="card-models">{{ card_icon('models','Liczebność ' ~ card.models_per_unit,card.models_per_unit) }}</span><strong class="card-cost">{{ card.unit_cost }}<small>pkt</small></strong></div></header>
+      {% if card.kind == 'profile' %}
+      <section class="card-profiles" aria-label="Profile ataku">
+      {% for profile in card.profiles %}<div class="attack-profile{% if not profile.active %} is-inactive{% endif %}"><div class="attack-primary">{{ card_icon(profile.icon,profile.name) }}{{ card_icon('dice','Kości ataku ' ~ profile.dice,profile.dice) }}{{ card_icon('strength',profile.strength_label ~ ' ' ~ profile.strength,profile.strength) }}</div>{% if profile.abilities %}<div class="attack-abilities">{% for ability in profile.abilities %}<span>{{ card_icon(ability.icon,ability.name) }}{{ ability.name }}</span>{% endfor %}</div>{% endif %}</div>{% endfor %}
+      </section>
+      {% if card.attack_abilities and not roster.collapse_descriptions %}<section class="card-attack-descriptions" aria-label="Opisy zdolności ataku">
+      {% for ability in card.attack_abilities %}<div class="card-ability">{{ card_icon(ability.icon,ability.name) }}<p><strong>{{ ability.name }}</strong><span>{{ ability.description }}</span></p></div>{% endfor %}
+      </section>{% endif %}
+      {% endif %}
+      <section class="card-abilities{% if card.kind == 'continuation' %} continuation-list{% elif card.attack_abilities and card.abilities and not roster.collapse_descriptions %} is-separated{% endif %}">
+      {% for ability in card.abilities %}<div class="card-ability">{{ card_icon(ability.icon,ability.name) }}<p><strong>{{ ability.name }}</strong>{% if not roster.collapse_descriptions %}<span>{{ ability.description }}</span>{% endif %}</p></div>{% else %}{% if not card.attack_abilities %}<p class="no-abilities">Brak zdolności.</p>{% endif %}{% endfor %}
+      </section>
+      <footer class="card-footer"><span>OPOS</span><span>{{ roster.name }}</span></footer>
+    </article>
+    {% endif %}
+  </div>
+  {% endfor %}
+</section>
+{% endfor %}

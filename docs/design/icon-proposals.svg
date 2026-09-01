@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1460" viewBox="0 0 1600 1460">
+  <defs>
+    <style>use { width: 24px; height: 24px; }</style>
+    <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#17201e" flood-opacity=".08"/>
+    </filter>
+
+    <!-- Existing production primitives, copied here only so this review sheet is standalone. -->
+    <g id="old-shield"><path d="M12 2.5 20 5.7v5.8c0 5-3.2 8.4-8 10-4.8-1.6-8-5-8-10V5.7Z"/></g>
+    <g id="old-fist"><path d="M6.5 10V6.5a1.5 1.5 0 0 1 3 0V9m0 0V5a1.5 1.5 0 0 1 3 0v4m0 0V5.8a1.5 1.5 0 0 1 3 0V10m0 0V7.5a1.5 1.5 0 0 1 3 0v6.2c0 4.7-2.7 7.3-7 7.3H10c-2 0-3.3-1-4.4-2.4L3 15.2a1.8 1.8 0 0 1 2.8-2.3L8 15"/></g>
+    <g id="old-sword"><path d="m5 19 4-4m-2 6-4-4 2-2 4 4Zm2-6L19 3l2 2-10 10Zm7-7 3 3"/></g>
+    <g id="old-ruler"><path d="m3 16 13-13 5 5L8 21Z"/><path d="m7 14 2 2m1-5 2 2m1-5 2 2m1-5 2 2"/></g>
+    <g id="old-eye"><path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.5"/></g>
+    <g id="old-activation"><path d="m12 2 8.7 5v10L12 22l-8.7-5V7Z"/><circle cx="12" cy="12" r="3"/></g>
+
+    <g id="old-melee"><use href="#old-sword"/></g>
+    <g id="old-measure"><use href="#old-ruler"/></g>
+    <g id="old-short"><use href="#old-ruler"/></g>
+    <g id="old-long"><use href="#old-ruler"/><path d="M12 19h9m-4-4 4 4-4 4"/></g>
+    <g id="old-dice"><path d="M4 6 12 2l8 4v12l-8 4-8-4Z"/><circle cx="8" cy="8" r=".7" fill="currentColor"/><circle cx="16" cy="8" r=".7" fill="currentColor"/><circle cx="12" cy="16" r=".7" fill="currentColor"/></g>
+    <g id="old-strength"><use href="#old-fist"/></g>
+    <g id="old-artillery"><path d="M3 14h13l4 3H8Z"/><circle cx="9" cy="18" r="3"/><path d="m12 13 5-8 3 2-4 7"/></g>
+    <g id="old-ambush"><use href="#old-eye"/><path d="M4 4 20 20"/></g>
+    <g id="old-scout"><use href="#old-eye"/><path d="M17 4h5v5m0-5-5 5"/></g>
+    <g id="old-agile"><path d="M4 17c4-1 5-5 8-6s5 0 8-4M4 12c3 0 4-3 6-5"/><path d="m16 4 4 3-3 4"/></g>
+    <g id="old-dodge"><use href="#old-shield"/><path d="m3 20 5-5m-5 0h5v5"/></g>
+    <g id="old-parry"><use href="#old-shield"/><path d="m8 17 8-8m-5-1 6 6"/></g>
+    <g id="old-steadfast"><use href="#old-shield"/><path d="M17 4v6m-3-3h6"/><path d="m5 17 4 2-4 2Z"/></g>
+    <g id="old-patient"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/><path d="m17 3 3 3"/></g>
+    <g id="old-breakthrough"><use href="#old-fist"/><path d="M3 3 21 21"/></g>
+    <g id="old-guardian"><use href="#old-shield"/><path d="M12 7v10m-5-5h10"/></g>
+    <g id="old-order"><use href="#old-activation"/><path d="M12 7v7m0 3h.01"/></g>
+
+    <!-- Proposed primitives. -->
+    <g id="new-shield"><path d="M12 2.8 20 6v5.5c0 4.8-3.1 8.2-8 9.9-4.9-1.7-8-5.1-8-9.9V6Z"/></g>
+    <g id="new-eye"><path d="M4 12s3-4.2 8-4.2 8 4.2 8 4.2-3 4.2-8 4.2S4 12 4 12Z"/><circle cx="12" cy="12" r="2.2"/></g>
+    <g id="new-activation"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/><path d="m17 3 3 3"/></g>
+    <g id="new-fist">
+      <path d="M7 21c-1 0-1.6-.7-1.7-1.7L5 16.5c-.9-1.3-1.7-3.1-1.9-4.7-.3-2 .6-3.6 2.1-4.3V5.3c0-1.8 1.4-3.1 3.1-3.1 1.3 0 2.2.6 2.9 1.6 1-.8 2.2-1 3.3-.6 1 .3 1.8 1 2.3 2 1.2-.3 2.4.1 3.2 1 1.1 1.3 1.4 3 1.3 4.8-.1 2.2-.6 3.8-1.5 5.5l-.3 2.7c-.1 1.1-.8 1.8-1.9 1.8Z"/>
+    </g>
+    <g id="new-flag"><path d="M5 20V4m0 1h8l-1.5 3L13 11H5"/></g>
+    <g id="new-burst"><path d="m12 3 1.8 5 4.8-2-2.1 4.7 4.5 2.6-5.1 1 1 5.1-3.9-3.5-3.5 3.9.4-5.2-5.2-.4 4.2-3-2.6-4.6 5 1.6Z"/></g>
+
+    <g id="new-melee">
+      <path d="M4.1 4.1 6.7 4.6 19.4 17.3 17.3 19.4 4.6 6.7Z"/>
+      <path d="m6.7 8.8.6-.6m1.5 2.7.7-.6m1.4 2.8.7-.7m1.5 2.8.6-.7" stroke-width="1.2"/>
+      <path d="m14.1 18.4 4.3-4.3"/>
+    </g>
+    <g id="new-measure">
+      <g transform="translate(-1.25 1.25)">
+        <path d="M6.7 4.6 19.4 17.3 17.3 19.4 4.6 6.7Z"/>
+        <path d="m6.7 8.8.6-.6m1.5 2.7.7-.6m1.4 2.8.7-.7m1.5 2.8.6-.7m1.5 2.8.6-.6" stroke-width="1.2"/>
+      </g>
+      <g transform="translate(1.25 -1.25)">
+        <path d="M6.7 4.6 19.4 17.3 17.3 19.4 4.6 6.7Z"/>
+        <path d="m6.7 8.8.6-.6m1.5 2.7.7-.6m1.4 2.8.7-.7m1.5 2.8.6-.7m1.5 2.8.6-.6" stroke-width="1.2"/>
+      </g>
+    </g>
+    <g id="new-short">
+      <path d="M6.7 4.6 19.4 17.3 17.3 19.4 4.6 6.7Z"/>
+      <path d="m6.7 8.8.6-.6m1.5 2.7.7-.6m1.4 2.8.7-.7m1.5 2.8.6-.7m1.5 2.8.6-.6" stroke-width="1.2"/>
+      <path d="M5.6 18.4 18.4 5.6"/>
+    </g>
+    <g id="new-long"><use href="#new-eye"/></g>
+    <g id="new-dice">
+      <path d="M5 5h14v14H5Z"/>
+      <path d="m5 5 2.5-2.5h14L19 5Z"/>
+      <path d="m19 5 2.5-2.5v14L19 19Z"/>
+    </g>
+    <g id="new-strength"><use href="#new-fist"/></g>
+    <g id="new-artillery"><use href="#new-eye"/><path d="M4 4 20 20"/></g>
+    <g id="new-ambush">
+      <path d="M3.5 10a8.5 8.5 0 0 1 17 0c-2.8-2.1-5.7-2.1-8.5 0-2.8-2.1-5.7-2.1-8.5 0Z"/>
+      <path d="m3.5 10 6 7m11-7-6 7M12 10v7"/><path d="M9.5 17h5v4h-5Z"/>
+    </g>
+    <g id="new-scout">
+      <path d="M4 18.5c-1.2-.8-1.7-2.2-1.2-3.5.4-1.2 1.5-2 2.8-2-.3-2 1.2-3.8 3.2-3.8.8 0 1.5.3 2.1.8.6-1.7 2.2-2.8 4-2.8 2.1 0 3.8 1.5 4 3.5 1.7-.1 3.1 1.2 3.1 2.9 0 2.1-.7 4-1.8 4.9H4Z"/>
+      <path d="M12 18.5V14m0 2-3-2m3 1 3-2"/>
+    </g>
+    <g id="new-agile">
+      <circle cx="7" cy="7" r="1.6"/><circle cx="16" cy="16" r="1.6"/>
+      <path d="M3 18c2.4-6.5 7-2.8 9.1-7.6C13.5 7.3 16 6 21 6"/><path d="m17.5 2.8 3.5 3.3-3.5 3.3"/>
+    </g>
+    <g id="new-dodge"><use href="#new-shield"/><use href="#new-eye"/></g>
+    <g id="new-parry">
+      <use href="#new-shield"/>
+      <g transform="translate(4.55 4.55) scale(.62)"><use href="#new-melee"/></g>
+    </g>
+    <g id="new-steadfast"><use href="#new-shield"/><g transform="translate(2.4 2.4) scale(.8)"><use href="#new-activation"/></g></g>
+    <g id="new-patient"><use href="#new-fist"/><g transform="translate(4.2 5.5) scale(.65)"><use href="#new-activation"/></g></g>
+    <g id="new-breakthrough">
+      <circle cx="12" cy="12" r="7.5"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/>
+      <path d="M9.5 16.5V8m0 0H15l-1 2 1 2H9.5"/>
+    </g>
+    <g id="new-guardian">
+      <path d="M18.7 8A7.5 7.5 0 1 0 19 16"/><path d="M18.7 8V3.5m0 4.5h-4.5"/>
+      <path d="M9.5 17V8m0 0H15l-1 2 1 2H9.5"/>
+    </g>
+    <g id="new-order">
+      <g transform="translate(6.5 .5) scale(.65)"><use href="#new-activation"/></g>
+      <g transform="translate(-1 5) scale(.8)"><circle cx="12" cy="12" r="8" fill="#fffdf8" stroke="none"/><use href="#new-activation"/></g>
+    </g>
+  </defs>
+
+  <rect width="1600" height="1460" fill="#f4f1e9"/>
+  <circle cx="1450" cy="-40" r="360" fill="#dbece7" opacity=".7"/>
+  <circle cx="-80" cy="1400" r="280" fill="#dbece7" opacity=".55"/>
+
+  <g font-family="DejaVu Sans, Arial, sans-serif" fill="#17201e">
+    <text x="60" y="62" font-size="17" font-weight="800" letter-spacing="2.5" fill="#176b5b">OPOS · KIERUNEK IKONOGRAFII</text>
+    <text x="60" y="112" font-size="38" font-weight="800">Szkice przełożone na propozycje 24×24</text>
+    <text x="60" y="145" font-size="17" fill="#5e6a66">Po lewej mała ikona produkcyjna, po prawej większa propozycja. Plik nie zmienia sprite’a aplikacji.</text>
+  </g>
+
+  <!-- Row 1 -->
+  <g transform="translate(60 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zasięg bliski</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">miarka ze sztychem i jelcem</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-melee"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-melee"/></g></g>
+  <g transform="translate(445 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zasięg średni</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">dwie równoległe miarki blisko siebie</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-measure"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-measure"/></g></g>
+  <g transform="translate(830 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zasięg daleki</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">miarka przekreślona równie długą linią</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-long"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-short"/></g></g>
+  <g transform="translate(1215 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Dystans / widzenie</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">oko zachowane jako symbol ogólny</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-long"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-long"/></g></g>
+
+  <!-- Row 2 -->
+  <g transform="translate(60 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Kość</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pusta przednia ścianka + dwa równoległoboki</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-dice"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-dice"/></g></g>
+  <g transform="translate(445 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Siła</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pięść od przodu, pusty środek</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-strength"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-strength"/></g></g>
+  <g transform="translate(830 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Artyleria</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">przekreślone oko</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-artillery"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-artillery"/></g></g>
+  <g transform="translate(1215 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zasadzka</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">spadochron i znacznik oddziału</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-ambush"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-ambush"/></g></g>
+
+  <!-- Row 3 -->
+  <g transform="translate(60 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zwiadowca</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">krzak</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-scout"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-scout"/></g></g>
+  <g transform="translate(445 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zwinny</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">jedna wycentrowana ścieżka między punktami</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-agile"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-agile"/></g></g>
+  <g transform="translate(830 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Unik</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">oko wycentrowane w tarczy</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-dodge"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-dodge"/></g></g>
+  <g transform="translate(1215 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Parowanie</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">nowy symbol bliskiego zasięgu w tarczy</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-parry"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-parry"/></g></g>
+
+  <!-- Row 4 -->
+  <g transform="translate(60 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Wytrwały</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">zegar aktywacji w tarczy</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-steadfast"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-steadfast"/></g></g>
+  <g transform="translate(445 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Cierpliwy</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">zegar aktywacji w pięści</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-patient"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-patient"/></g></g>
+  <g transform="translate(830 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Przełamanie</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">flaga w celowniku</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-breakthrough"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-breakthrough"/></g></g>
+  <g transform="translate(1215 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Strażnik</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">flaga otoczona strzałką przerzutu</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-guardian"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-guardian"/></g></g>
+
+  <!-- Row 5 -->
+  <g transform="translate(60 1140)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Rozkaz</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">dwa zegary aktywacji</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-order"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-order"/></g></g>
+
+  <g font-family="DejaVu Sans, Arial, sans-serif" fill="#5e6a66">
+    <text x="60" y="1402" font-size="15">Kierunek A · kontur 1,65 · zaokrąglone zakończenia · bez zmian w app/static/icons/opos.svg</text>
+    <text x="1540" y="1402" font-size="15" text-anchor="end">15.08.2026</text>
+  </g>
+</svg>

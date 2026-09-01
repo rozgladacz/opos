@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon with context %}
+{% block title %}{{ army.name }} — OPOS{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">Armia</p><h1>{{ army.name }}</h1><p>Każdy szablon jest snapshotem pojedynczego oddziału — bez liczby kopii.</p></div><a class="button" href="/rosters/new">Nowa rozpiska</a></div>
+<section class="panel inline-settings">
+  <form method="post" action="/armies/{{ army.id }}" class="inline-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label>Nazwa<input name="name" value="{{ army.name }}" maxlength="120" required></label><button class="button" type="submit">Zapisz ustawienia</button></form>
+  <form method="post" action="/armies/{{ army.id }}/delete" data-confirm="Usunąć Armię i jej szablony?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-danger" type="submit">Usuń Armię</button></form>
+</section>
+{% if army.templates %}<div class="template-list">
+{% for template in army.templates %}<article class="template-card" data-template-id="{{ template.id }}" data-template-row><div><h2>{{ template.name }}</h2><div class="stat-line">{{ icon('defense','Zbroja ' ~ (template.defense|stat),template.defense|stat) }}{{ icon('toughness','Życie ' ~ (template.toughness|stat),template.toughness|stat) }}{{ icon('models','Liczebność ' ~ template.models_per_unit,template.models_per_unit) }}<span>modeli / oddział</span></div></div><button class="button button-danger js-delete-template" data-army-id="{{ army.id }}" data-template-id="{{ template.id }}">Usuń</button></article>{% endfor %}
+</div>{% else %}<div class="empty-state panel"><h2>Biblioteka jest pusta</h2><p>Otwórz rozpis, utwórz oddział i wybierz „Zapisz do Armii”.</p></div>{% endif %}
+{% endblock %}

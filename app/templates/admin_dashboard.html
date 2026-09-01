@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block title %}Administracja — OPOS{% endblock %}
+{% block content %}
+<div class="page-heading"><div><p class="eyebrow">System</p><h1>Administracja</h1><p>Wersja aplikacji: {{ app_version }}</p></div></div>
+{% if message %}<p class="notice" role="status">{{ message }}</p>{% endif %}{% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+{% if warn_default_password %}<p class="form-error" role="alert">Konto administratora nadal używa niebezpiecznego hasła domyślnego. Zmień je w Użytkownikach.</p>{% endif %}
+<section class="panel narrow"><h2>Aktualizator</h2><p>Aktualizuje usługę z przypiętego kanału repozytorium OPOS.</p><form method="post" action="/admin/update" data-confirm="Uruchomić aktualizację aplikacji?"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><button class="button button-primary" type="submit">Sprawdź i zastosuj aktualizację</button></form><p><a href="/admin/update-status">Status aktualizatora (JSON)</a></p></section>
+{% endblock %}

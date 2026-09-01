@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% from "partials/icon.html" import icon with context %}
+{% block title %}{{ roster.name }} — OPOS{% endblock %}
+{% block body_class %}editor-page{% endblock %}
+{% block content %}
+<div class="page-heading roster-heading">
+  <div><p class="eyebrow">Rozpiska</p><h1>{{ roster.name }}</h1><p><span id="profile-count">{{ units|length }}</span> wspólnych profili · <strong id="roster-total">{{ total_cost }} pkt</strong>{% if display_points_limit is not none %} / {{ display_points_limit }}{% endif %}</p></div>
+</div>
+
+<details class="panel settings-panel"><summary>Ustawienia rozpiski</summary>
+  <form method="post" action="/rosters/{{ roster.id }}/settings" class="settings-grid" id="roster-settings-form" data-requires-custom-stats="{{ 'true' if requires_custom_stats else 'false' }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Nazwa<input name="name" value="{{ roster.name }}" maxlength="120" required></label>
+    <label><span class="points-limit-label">{% if roster.points_scale != 1 %}Limit punktów, bez skalowania{% else %}Limit punktów{% endif %}</span><input name="points_limit" type="number" min="1" value="{{ roster.points_limit or '' }}"></label>
+    <label class="toggle-row"><input name="custom_stats_enabled" type="checkbox" value="true" {% if roster.custom_stats_enabled %}checked{% endif %}><span><strong>Dowolne statystyki</strong><small>Włącz pola liczbowe zamiast standardowych list.</small></span></label>
+    <div class="scale-row"><input class="scale-toggle" id="edit-points-scaling-enabled" name="points_scaling_enabled" type="checkbox" value="true" {% if roster.points_scale != 1 %}checked{% endif %}><label class="scale-copy" for="edit-points-scaling-enabled"><strong>Skalowanie punktów</strong><small>Dzieli punkty przez wpisaną wartość.</small></label><input class="scale-value" name="points_scale" type="number" min="1" max="1000000" step="1" value="{{ roster.points_scale if roster.points_scale != 1 else 10 }}" aria-label="Wartość skalowania punktów" required></div>
+    <label class="toggle-row"><input name="collapse_descriptions" type="checkbox" value="true" {% if roster.collapse_descriptions %}checked{% endif %}><span><strong>Zwiń opisy</strong><small>Pokazuj symbole i nazwy zdolności bez pełnych opisów.</small></span></label>
+    <label class="toggle-row"><input name="small_battle_enabled" type="checkbox" value="true" {% if roster.small_battle_enabled %}checked{% endif %}><span><strong>Mała bitwa</strong><small>Podwój standardowe wartości Życia.</small></span></label>
+    <label class="toggle-row"><input name="shield_fist_enabled" type="checkbox" value="true" {% if roster.shield_fist_enabled %}checked{% endif %}><span><strong>Tarcza i Pięść</strong><small>Pokazuj alternatywną notację statystyk w tej rozpisce.</small></span></label>
+    <button class="button" type="submit">Zapisz ustawienia</button>
+  </form>
+</details>
+
+<div class="editor-layout" id="opos-editor" data-roster-id="{{ roster.id }}" data-army-id="{{ roster.army_id or '' }}" data-custom-stats="{{ 'true' if roster.custom_stats_enabled else 'false' }}" data-points-scale="{{ roster.points_scale }}" data-collapse-descriptions="{{ 'true' if roster.collapse_descriptions else 'false' }}" data-small-battle="{{ 'true' if roster.small_battle_enabled else 'false' }}" data-shield-fist="{{ 'true' if shield_fist_enabled else 'false' }}">
+  <section class="roster-column" aria-labelledby="units-title">
+    <div class="section-heading"><h2 id="units-title">Oddziały w rozpisce</h2></div>
+    <div id="unit-list" class="unit-list">
+    {% for row in unit_rows %}{% set unit = row.unit %}
+      <article class="unit-row" data-unit-id="{{ unit.id }}">
+        <div class="unit-row-main">
+          <h3>{{ unit.name }}</h3>
+          <div class="stat-line">{{ icon('defense',row.defense_label ~ ' ' ~ row.defense,row.defense) }}{{ icon('toughness','Życie ' ~ row.toughness,row.toughness) }}{{ icon('models','Liczebność ' ~ unit.models_per_unit,unit.models_per_unit) }}<span>modeli × {{ unit.unit_copies }} oddz.</span></div>
+        </div>
+        <div class="cost-stack"><strong>{{ row.unit_cost }} pkt</strong><small>łącznie {{ row.entry_cost }}</small></div>
+        {% if row.abilities %}<div class="unit-abilities" aria-label="Zdolności oddziału">{% for ability in row.abilities %}<span>{{ icon(ability.icon,ability.name) }}<strong>{{ ability.name }}</strong></span>{% endfor %}</div>{% endif %}
+        <div class="unit-profiles" aria-label="Profile ataku">
+          {% for profile in row.profiles %}<div class="unit-profile{% if not profile.active %} is-inactive{% endif %}" data-range="{{ profile.range }}">
+            <span class="unit-profile-name">{{ icon(profile.icon,profile.name) }}<strong>{{ profile.name }}</strong></span>
+            <span>{{ icon('dice','Kości ataku ' ~ profile.dice,profile.dice) }}{{ icon('strength',profile.strength_label ~ ' ' ~ profile.strength,profile.strength) }}</span>
+            {% if profile.abilities %}<small>{% for ability in profile.abilities %}<span>{{ icon(ability.icon,ability.name) }}{{ ability.name }}</span>{% endfor %}</small>{% endif %}
+          </div>{% endfor %}
+        </div>
+        <div class="unit-actions">
+          <button class="drag-handle" type="button" aria-label="Przeciągnij, aby zmienić kolejność. Klawiatura: strzałka w górę lub w dół." title="Przeciągnij, aby zmienić kolejność">⠿</button>
+          <button class="button js-edit-unit" type="button">Edytuj</button><button class="button js-duplicate-unit" type="button">Duplikuj</button>
+          {% if roster.army_id %}<button class="button js-save-template" type="button">{% if unit.source_template_id %}Zapisz jako nowy{% else %}Zapisz do Armii{% endif %}</button>{% endif %}
+          {% if unit.source_template_id %}<button class="button js-update-template" type="button" {% if not row.can_update_template %}disabled title="Szablon należy do Armii „{{ row.source_template_army_name }}”. Przypisz ją ponownie rozpisce, aby odblokować aktualizację."{% endif %}>Aktualizuj szablon</button>{% endif %}
+          <button class="button button-danger js-delete-unit" type="button">Usuń</button>
+        </div>
+      </article>
+    {% else %}<div class="empty-state" id="units-empty">Dodaj pierwszy oddział bezpośrednio albo wybierz szablon z Armii.</div>{% endfor %}
+    </div>
+  </section>
+
+  <aside class="library-column" aria-labelledby="library-title">
+    <div class="library-tools"><strong><span id="sticky-roster-total">{{ total_cost }}</span> pkt{% if display_points_limit is not none %} / {{ display_points_limit }}{% endif %}</strong><div class="row-actions"><button class="button button-primary" id="add-unit" type="button">Dodaj oddział</button><a class="button" href="/rosters/{{ roster.id }}/cards">Karty</a><a class="button" href="/rosters/{{ roster.id }}/cards.pdf">PDF</a></div></div>
+    <div class="section-heading library-army-heading"><form method="post" action="/rosters/{{ roster.id }}/army" class="library-army-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label for="roster-army-select"><span id="library-title">Dodaj z armii</span><select id="roster-army-select" name="army_id"><option value="">— wybierz —</option>{% for army in armies %}<option value="{{ army.id }}" {% if army.id == roster.army_id %}selected{% endif %}>{{ army.name }}</option>{% endfor %}</select></label></form></div>
+    {% if army_templates %}<div class="library-templates">{% for template in army_templates %}<div class="library-template-row" data-template-row><button class="template-pick js-add-template" type="button" data-template-id="{{ template.id }}"><strong>{{ template.name }}</strong><span>{{ template.models_per_unit }} modeli · {% if shield_fist_enabled %}T {{ display_stat('defense', template.defense, shield_fist_enabled=true) }}{% else %}Z {{ template.defense|stat }}{% endif %} · Ż {{ template.toughness|stat }}</span></button><button class="template-delete js-delete-template" type="button" data-army-id="{{ roster.army.id }}" data-template-id="{{ template.id }}" aria-label="Usuń szablon {{ template.name }}" title="Usuń szablon">×</button></div>{% endfor %}</div>
+    {% elif roster.army %}<p class="empty-state">Ta Armia nie ma jeszcze szablonów.</p>{% else %}<p class="empty-state">Wybierz armię z listy powyżej, aby używać jej biblioteki.</p>{% endif %}
+  </aside>
+</div>
+
+<dialog id="unit-dialog" class="unit-dialog" aria-labelledby="unit-dialog-title">
+  <form id="unit-form" method="dialog">
+    <header class="dialog-header"><div><p class="eyebrow">Wspólny profil</p><h2 id="unit-dialog-title">Dodaj oddział</h2></div><button class="icon-button" id="close-unit-dialog" type="button" aria-label="Zamknij">×</button></header>
+    <div class="unit-form-grid">
+      <label class="span-2">Nazwa<input id="unit-name" maxlength="120" required></label>
+      <label>Modele / oddział<input id="models-per-unit" type="number" min="1" max="999" value="1" required></label>
+      <label>Liczba kopii<input id="unit-copies" type="number" min="1" max="999" value="1" required></label>
+      <label><span id="defense-label">{% if shield_fist_enabled %}Tarcza{% else %}Zbroja{% endif %}</span><div id="defense-field"></div></label>
+      <label>Życie<div id="toughness-field"></div></label>
+    </div>
+    <details class="editor-section ability-section" open><summary>Zdolności pasywne</summary><div id="passive-options" class="ability-grid"></div></details>
+    <details class="editor-section ability-section" open><summary>Zdolności specjalne</summary><div id="special-options" class="ability-grid"></div><label id="aura-target-field" class="aura-target" hidden>Cel Aury<select id="aura-target"></select></label></details>
+    <details class="editor-section profiles-section" open><summary>Profile ataku</summary><div id="profile-editors" class="profile-editors"></div></details>
+    <section class="quote-panel" aria-live="polite"><div><span>Koszt oddziału</span><strong id="quote-unit-cost">—</strong></div><div><span>Koszt wpisu</span><strong id="quote-entry-cost">—</strong></div><details><summary>Rozbicie ceny</summary><dl id="quote-breakdown"></dl></details><p id="quote-error" class="form-error" hidden></p></section>
+    <footer class="dialog-actions"><button class="button button-quiet" id="cancel-unit" type="button">Anuluj</button><button class="button button-primary" id="save-unit" type="submit">Dodaj oddział</button></footer>
+  </form>
+</dialog>
+
+<script id="units-data" type="application/json">{{ units_payload|tojson }}</script>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/opos_editor.js') }}?v=opos-v3.2" defer></script>{% endblock %}

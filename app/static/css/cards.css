@@ -1,0 +1,70 @@
+@font-face { font-family: "DejaVu Sans"; src: url("../fonts/DejaVuSans.ttf") format("truetype"); font-weight: 400; }
+@font-face { font-family: "DejaVu Sans"; src: url("../fonts/DejaVuSans-Bold.ttf") format("truetype"); font-weight: 700; }
+@page { size: A4 landscape; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; color: #141b19; font-family: "DejaVu Sans", sans-serif; background: #e7e5df; }
+.screen-toolbar { position: sticky; top: 0; z-index: 5; display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 14px 24px; color: white; background: #17201e; }
+.screen-toolbar div { display: grid; }
+.screen-toolbar span { color: #bdc8c4; font-size: 12px; }
+.screen-toolbar nav { display: flex; gap: 8px; }
+.screen-toolbar a { padding: 9px 12px; border: 1px solid #5b6662; border-radius: 7px; color: white; text-decoration: none; }
+.screen-toolbar a.primary { color: #17201e; background: #a9d4c9; border-color: #a9d4c9; font-weight: 700; }
+.card-sheet { width: 297mm; height: 210mm; display: grid; grid-template-columns: 148.5mm 148.5mm; grid-template-rows: 105mm 105mm; margin: 12mm auto; background: white; break-after: page; break-inside: avoid; page-break-inside: avoid; overflow: hidden; box-shadow: 0 8px 35px rgba(0,0,0,.18); }
+.card-sheet + .card-sheet { break-before: page; page-break-before: always; }
+.card-sheet:last-child { break-after: auto; }
+.card-cell { width: 148.5mm; height: 105mm; padding: 4.5mm; position: relative; }
+.card-cell:nth-child(odd) { border-right: .2mm dashed #777; }
+.card-cell:nth-child(-n+2) { border-bottom: .2mm dashed #777; }
+.unit-card { height: 96mm; position: relative; display: grid; grid-template-rows: auto minmax(31mm, auto) 1fr auto; gap: 2.2mm; padding: 4.2mm; border: .45mm solid #17201e; border-radius: 2mm; background: #fff; overflow: hidden; break-inside: avoid; page-break-inside: avoid; }
+.unit-card-profile.has-attack-descriptions { grid-template-rows: auto minmax(31mm, auto) auto 1fr auto; }
+.card-header { display: flex; justify-content: space-between; align-items: center; gap: 3mm; padding-bottom: 1.8mm; border-bottom: .35mm solid #17201e; }
+.card-title { min-width: 0; flex: 1; }
+.card-kicker { display: block; margin-bottom: .5mm; color: #176b5b; font-size: 6.5pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.card-header h1 { margin: 0; font-size: 18pt; line-height: 1.02; }
+.card-title h1 { overflow-wrap: anywhere; }
+.card-title.is-long h1 { font-size: 14pt; line-height: 1.05; }
+.card-cost-group { display: flex; align-items: center; gap: 1.2mm; flex: 0 0 auto; }
+.card-models .card-icon-wrap { width: 10.5mm; height: 10.5mm; }
+.card-models .card-icon-value { font-size: 8.5pt; }
+.card-cost { display: flex; align-items: baseline; gap: .8mm; padding: 1.5mm 2.4mm; color: white; background: #176b5b; border-radius: 1.5mm; font-size: 17pt; line-height: 1; white-space: nowrap; }
+.card-cost small { font-size: 6pt; text-transform: uppercase; }
+.card-stats { display: flex; gap: 2mm; flex: 0 0 auto; }
+.card-stats .card-icon-wrap { width: 12.5mm; height: 12.5mm; }
+.card-stats .card-icon-value { font-size: 10.5pt; }
+.card-icon-wrap { width: 7.5mm; height: 7.5mm; position: relative; display: inline-block; vertical-align: middle; flex: 0 0 auto; }
+.card-icon { width: 100%; height: 100%; display: block; }
+.card-icon-value { position: absolute; top: 50%; left: 50%; display: block; font-size: 6.2pt; font-weight: 700; line-height: 1; transform: translate(-50%, -50%); }
+.card-profiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.2mm; min-height: 31mm; }
+.attack-profile { min-width: 0; display: flex; flex-direction: column; justify-content: center; padding: 2.3mm; border: .25mm solid #bcc5c1; border-radius: 1.5mm; }
+.attack-profile.is-inactive { color: #8a918e; background: #f1f2ef; }
+.attack-primary { display: flex; align-items: center; justify-content: space-around; gap: 1.2mm; width: 100%; }
+.attack-primary .card-icon-wrap { width: 11.5mm; height: 11.5mm; }
+.attack-primary .card-icon-value { font-size: 9.5pt; }
+.attack-abilities { display: flex; flex-wrap: wrap; justify-content: center; gap: .7mm 1.2mm; margin-top: 1.6mm; }
+.attack-abilities span { display: inline-flex; align-items: center; gap: .4mm; font-size: 5.5pt; }
+.attack-abilities .card-icon-wrap { width: 4.5mm; height: 4.5mm; }
+.card-abilities, .card-attack-descriptions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: space-evenly; gap: 1.3mm 2.5mm; min-height: 0; }
+.card-attack-descriptions { align-content: start; }
+.card-abilities.is-separated { padding-top: 1mm; border-top: .2mm solid #c4cbc8; }
+.card-ability { min-width: 0; display: grid; grid-template-columns: 7mm 1fr; gap: 1mm; align-items: start; }
+.card-ability .card-icon-wrap { width: 6.5mm; height: 6.5mm; }
+.card-ability p { margin: 0; min-width: 0; }
+.card-ability strong { display: block; font-size: 6.5pt; line-height: 1.15; }
+.card-ability span { display: block; font-size: 5.3pt; line-height: 1.2; }
+.card-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1mm; border-top: .2mm solid #c4cbc8; color: #68716e; font-size: 5.2pt; letter-spacing: .08em; text-transform: uppercase; }
+.unit-card-continuation { grid-template-rows: auto 1fr auto; }
+.continuation-list { grid-template-columns: 1fr; gap: .8mm; }
+.continuation-list .card-ability { grid-template-columns: 8mm 1fr; }
+.continuation-list .card-ability .card-icon-wrap { width: 7.5mm; height: 7.5mm; }
+.continuation-list .card-ability strong { font-size: 7.2pt; }
+.continuation-list .card-ability span { font-size: 6.2pt; }
+.no-abilities, .cards-empty { color: #68716e; text-align: center; }
+.cards-empty { margin: 15vh auto; padding: 30px; max-width: 500px; background: white; border-radius: 12px; }
+@media print {
+  html, body { background: white; }
+  .screen-toolbar { display: none; }
+  .card-sheet { margin: 0; box-shadow: none; }
+}
+@media screen and (max-width: 1100px) {
+  .card-sheet { transform-origin: top left; transform: scale(.72); margin-bottom: -50mm; }
+}

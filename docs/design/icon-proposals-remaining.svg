@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1460" viewBox="0 0 1600 1460">
+  <defs>
+    <style>use { width: 24px; height: 24px; }</style>
+    <filter id="card-shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#17201e" flood-opacity=".08"/>
+    </filter>
+
+    <!-- Production symbols copied only for comparison on this standalone review sheet. -->
+    <g id="old-shield"><path d="M12 2.5 20 5.7v5.8c0 5-3.2 8.4-8 10-4.8-1.6-8-5-8-10V5.7Z"/></g>
+    <g id="old-heart"><path d="M12 21S3 15.6 3 8.8C3 4 9 2.7 12 6.5 15 2.7 21 4 21 8.8 21 15.6 12 21 12 21Z"/></g>
+    <g id="old-sword"><path d="m5 19 4-4m-2 6-4-4 2-2 4 4Zm2-6L19 3l2 2-10 10Zm7-7 3 3"/></g>
+    <g id="old-ruler"><path d="m3 16 13-13 5 5L8 21Z"/><path d="m7 14 2 2m1-5 2 2m1-5 2 2m1-5 2 2"/></g>
+    <g id="old-die"><path d="M4 6 12 2l8 4v12l-8 4-8-4Z"/><circle cx="8" cy="8" r=".7" fill="currentColor"/><circle cx="16" cy="8" r=".7" fill="currentColor"/><circle cx="12" cy="16" r=".7" fill="currentColor"/></g>
+    <g id="old-activation-shape"><path d="m12 2 8.7 5v10L12 22l-8.7-5V7Z"/><circle cx="12" cy="12" r="3"/></g>
+    <g id="old-move"><path d="M3 12h17m-5-5 5 5-5 5"/></g>
+    <g id="old-reroll"><path d="M18.5 8A7 7 0 1 0 19 15m-.5-7V3m0 5h-5"/></g>
+
+    <g id="old-defense"><use href="#old-shield"/></g>
+    <g id="old-toughness"><use href="#old-heart"/></g>
+    <g id="old-activation"><use href="#old-activation-shape"/></g>
+    <g id="old-hero"><path d="m12 2 2.8 5.8 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 8.7l6.2-.9Z"/></g>
+    <g id="old-fast"><use href="#old-move"/><path d="M3 7h8M3 17h8"/></g>
+    <g id="old-immobile"><use href="#old-move"/><path d="M4 4 20 20"/></g>
+    <g id="old-jump"><path d="M3 17c4 0 5-10 10-10h7"/><path d="m16 3 4 4-4 4"/><path d="M3 21h18"/></g>
+    <g id="old-counterattack"><use href="#old-sword"/><path d="M21 17h-7m3-3-3 3 3 3"/></g>
+    <g id="old-airplane"><path d="m2 13 8-2 3-8h2l-1 8 7 3v2l-7-1-2 6h-2v-6l-8 1Z"/></g>
+    <g id="old-patching"><use href="#old-heart"/><path d="M12 8v8m-4-4h8"/></g>
+    <g id="old-aura"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8" stroke-dasharray="2 2"/></g>
+    <g id="old-transport"><path d="M3 7h12v10H3Zm12 3h3l3 3v4h-6Z"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></g>
+    <g id="old-area"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></g>
+    <g id="old-deadly"><path d="M5 9a7 7 0 0 1 14 0c0 3-2 4-3 5v4H8v-4c-1-1-3-2-3-5Z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="15" cy="10" r="1" fill="currentColor"/><path d="m10 15 2-2 2 2M10 18v3m4-3v3"/></g>
+    <g id="old-double"><use href="#old-die"/><path d="M7 4 12 2l8 4v10"/></g>
+    <g id="old-reload"><use href="#old-reroll"/><path d="M12 9v4l3 2"/></g>
+    <g id="old-charge"><use href="#old-sword"/><path d="M2 8h7M5 5l4 3-4 3"/></g>
+    <g id="old-prepared"><use href="#old-ruler"/><path d="M20 12a6 6 0 0 1-7 8m0 0 2-3m-2 3 3 2"/></g>
+
+    <!-- Reused visual language established on the first proposal sheet. -->
+    <g id="new-shield"><path d="M12 2.8 20 6v5.5c0 4.8-3.1 8.2-8 9.9-4.9-1.7-8-5.1-8-9.9V6Z"/></g>
+    <g id="new-heart"><path d="M12 20.5 5.2 14C1.5 10.5 3.2 4 8.1 4c1.7 0 3.1.8 3.9 2.2C12.8 4.8 14.2 4 15.9 4c4.9 0 6.6 6.5 2.9 10Z"/></g>
+    <g id="new-activation"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/><path d="m17 3 3 3"/></g>
+    <g id="new-melee">
+      <path d="M4.1 4.1 6.7 4.6 19.4 17.3 17.3 19.4 4.6 6.7Z"/>
+      <path d="m6.7 8.8.6-.6m1.5 2.7.7-.6m1.4 2.8.7-.7m1.5 2.8.6-.7" stroke-width="1.2"/>
+      <path d="m14.1 18.4 4.3-4.3"/>
+    </g>
+    <g id="new-ruler">
+      <path d="M6.7 4.6 19.4 17.3 17.3 19.4 4.6 6.7Z"/>
+      <path d="m6.7 8.8.6-.6m1.5 2.7.7-.6m1.4 2.8.7-.7m1.5 2.8.6-.7m1.5 2.8.6-.6" stroke-width="1.2"/>
+    </g>
+    <g id="new-die"><path d="M5 5h14v14H5Z"/><path d="m5 5 2.5-2.5h14L19 5Z"/><path d="m19 5 2.5-2.5v14L19 19Z"/></g>
+    <g id="new-reroll"><path d="M18.7 8A7.5 7.5 0 1 0 19 16"/><path d="M18.7 8V3.5m0 4.5h-4.5"/></g>
+    <g id="new-burst"><path d="m12 3 1.8 5 4.8-2-2.1 4.7 4.5 2.6-5.1 1 1 5.1-3.9-3.5-3.5 3.9.4-5.2-5.2-.4 4.2-3-2.6-4.6 5 1.6Z"/></g>
+
+    <!-- Remaining proposals. -->
+    <g id="new-defense"><use href="#new-shield"/></g>
+    <g id="new-toughness"><use href="#new-heart"/></g>
+    <g id="new-activation-icon"><use href="#new-activation"/></g>
+    <g id="new-hero"><path d="M4 18 3 7l5 5 4-7 4 7 5-5-1 11Z"/><path d="M5 21h14"/></g>
+    <g id="new-fast"><use href="#old-fast"/></g>
+    <g id="new-immobile"><use href="#old-immobile"/></g>
+    <g id="new-jump"><use href="#old-jump"/></g>
+    <g id="new-counterattack"><g transform="translate(2.4 2.4) scale(.8)"><use href="#new-melee"/><use href="#new-melee" transform="rotate(90 12 12)"/></g></g>
+    <g id="new-airplane"><path d="M11 2h2l1.2 7 6.8 3v2l-6.7-1-1.3 8h-2l-1.3-8L3 14v-2l6.8-3Z"/></g>
+    <g id="new-patching"><use href="#new-heart"/><path d="M12 8v8m-4-4h8"/></g>
+    <g id="new-aura"><use href="#old-aura"/></g>
+    <g id="new-transport"><path d="M3 7h11v10H3Z"/><path d="M14 10h4l3 3v4h-7Z"/><circle cx="7" cy="18" r="2" fill="#fffdf8"/><circle cx="17.5" cy="18" r="2" fill="#fffdf8"/><path d="M16 13h3"/></g>
+    <g id="new-area"><circle cx="12" cy="12" r="9"/><g transform="translate(3.6 3.6) scale(.7)"><use href="#new-burst"/></g></g>
+    <g id="new-deadly"><path d="M5 10a7 7 0 0 1 14 0c0 2.8-1.3 4.3-3 5.4V20H8v-4.6C6.3 14.3 5 12.8 5 10Z"/><circle cx="9" cy="11" r="1.3"/><circle cx="15" cy="11" r="1.3"/><path d="m10.5 16 1.5-2 1.5 2M10 20v-3m4 3v-3"/></g>
+    <g id="new-double">
+      <g transform="translate(5 -1) scale(.72)"><use href="#new-die"/></g>
+      <g transform="translate(-1 5) scale(.82)"><path d="M5 5 7.5 2.5h14v14L19 19H5Z" fill="#fffdf8" stroke="none"/><use href="#new-die"/></g>
+    </g>
+    <g id="new-reload"><circle cx="12" cy="12" r="7.5"/><path d="M12 8v4l3 2"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></g>
+    <g id="new-charge"><use href="#new-reroll"/><g transform="translate(4.5 4.5) scale(.62)"><use href="#new-melee"/></g></g>
+    <g id="new-prepared"><use href="#new-reroll"/><g transform="translate(5.5 5.5) scale(.54)"><use href="#old-move"/></g></g>
+  </defs>
+
+  <rect width="1600" height="1460" fill="#f4f1e9"/>
+  <circle cx="1450" cy="-40" r="360" fill="#dbece7" opacity=".7"/>
+  <circle cx="-80" cy="1400" r="280" fill="#dbece7" opacity=".55"/>
+
+  <g font-family="DejaVu Sans, Arial, sans-serif" fill="#17201e">
+    <text x="60" y="62" font-size="17" font-weight="800" letter-spacing="2.5" fill="#176b5b">OPOS · KIERUNEK IKONOGRAFII · CZĘŚĆ II</text>
+    <text x="60" y="112" font-size="38" font-weight="800">Propozycje pozostałych ikon 24×24</text>
+    <text x="60" y="145" font-size="17" fill="#5e6a66">Zatwierdzona pierwsza plansza pozostaje bez zmian. Po lewej produkcja, po prawej nowa propozycja.</text>
+  </g>
+
+  <!-- Row 1: core statistics and identity. -->
+  <g transform="translate(60 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Obrona</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pusta tarcza na wartość</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-defense"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-defense"/></g></g>
+  <g transform="translate(445 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Wytrzymałość</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">serce z pustym środkiem na wartość</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-toughness"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-toughness"/></g></g>
+  <g transform="translate(830 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Aktywacja</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">zatwierdzony zegar aktywacji</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-activation"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-activation-icon"/></g></g>
+  <g transform="translate(1215 180)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Bohater</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">korona jako status wyjątkowej jednostki</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-hero"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-hero"/></g></g>
+
+  <!-- Row 2: movement. -->
+  <g transform="translate(60 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Szybki</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pozostaje stary symbol</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-fast"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-fast"/></g></g>
+  <g transform="translate(445 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Nieruchomy</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pozostaje stary symbol</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-immobile"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-immobile"/></g></g>
+  <g transform="translate(830 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Skok</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pozostaje stary symbol</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-jump"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-jump"/></g></g>
+  <g transform="translate(1215 420)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Samolot</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">uproszczona sylwetka z góry</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-airplane"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-airplane"/></g></g>
+
+  <!-- Row 3: passive and special abilities. -->
+  <g transform="translate(60 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Kontratak</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">dwa skrzyżowane symbole wręcz</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-counterattack"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-counterattack"/></g></g>
+  <g transform="translate(445 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Łatanie</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">leczenie: serce z plusem</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-patching"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-patching"/></g></g>
+  <g transform="translate(830 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Aura</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">pozostaje stary symbol</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-aura"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-aura"/></g></g>
+  <g transform="translate(1215 660)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Transport</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">czytelna sylwetka pojazdu transportowego</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-transport"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-transport"/></g></g>
+
+  <!-- Row 4: weapon abilities. -->
+  <g transform="translate(60 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Obszarowa</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">wybuch obejmujący obszar</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-area"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-area"/></g></g>
+  <g transform="translate(445 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Zabójczy</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">uproszczona czaszka</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-deadly"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-deadly"/></g></g>
+  <g transform="translate(830 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Podwójny</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">tylna kość całkowicie zasłonięta z przodu</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-double"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-double"/></g></g>
+  <g transform="translate(1215 900)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Przeładowanie</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">celownik ze wskazówkami zegara</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-reload"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-reload"/></g></g>
+
+  <!-- Row 5: conditional rerolls. -->
+  <g transform="translate(60 1140)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Szarża</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">Przerzut otaczający Wręcz</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-charge"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-charge"/></g></g>
+  <g transform="translate(445 1140)"><rect width="325" height="210" rx="18" fill="#fffdf8" stroke="#d8d3c7" filter="url(#card-shadow)"/><text x="22" y="35" font-family="DejaVu Sans" font-size="20" font-weight="800" fill="#17201e">Przygotowanie</text><text x="22" y="190" font-family="DejaVu Sans" font-size="13" fill="#5e6a66">Przerzut otaczający Ruch</text><g color="#8b9692" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(24 67) scale(2.5)"><use href="#old-prepared"/></g><path d="M105 55v103" stroke="#d8d3c7"/><g color="#176b5b" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" transform="translate(150 48) scale(4.3)"><use href="#new-prepared"/></g></g>
+
+  <g font-family="DejaVu Sans, Arial, sans-serif" fill="#5e6a66">
+    <text x="60" y="1402" font-size="15">Kierunek A · kontur 1,65 · złożenia z zatwierdzonych prymitywów · bez zmian w sprite aplikacji</text>
+    <text x="1540" y="1402" font-size="15" text-anchor="end">15.08.2026</text>
+  </g>
+</svg>

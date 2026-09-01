@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {"type": "command", "command": "python -m pytest -x --tb=short 2>&1 | tail -20"}
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Bash(make test)",
+      "Bash(make test-fast)",
+      "Bash(make lint)",
+      "Bash(pytest*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git status*)",
+      "Bash(git show*)",
+      "Bash(ls*)",
+      "Bash(find*)",
+      "Bash(rg*)",
+      "Bash(grep *)",
+      "Bash(cat*)",
+      "Bash(sed*)",
+      "mcp__Claude_Preview__preview_logs",
+      "mcp__Claude_Preview__preview_screenshot",
+      "mcp__Claude_Preview__preview_console_logs",
+      "mcp__Claude_Preview__preview_snapshot",
+      "mcp__Claude_Preview__preview_list",
+      "mcp__ccd_session_mgmt__search_session_transcripts",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
+    ]
+  }
+}

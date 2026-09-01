@@ -1,0 +1,27 @@
+data/
+.dev-data/
+!app/data/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+*.bak
+
+# Python
+__pycache__/
+app/routers/__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+
+# Local tooling/bootstrap artifacts
+.tools/
+
+# A4 pipeline output (rules_extract / rules_drift / rules_classify_geometry)
+build/
+
+# Dokumenty zasad: publikujemy OPOS, historyczne/robocze dokumenty pozostają lokalne.
+app/static/docs/*
+!app/static/docs/OPOS.docx
+!app/static/docs/OPOS.pdf

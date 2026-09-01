@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}OPOS — kalkulator oddziałów{% endblock %}
+{% block content %}
+<section class="hero-panel">
+  <div>
+    <h1>Stwórz armię, wydrukuj karty, graj.</h1>
+    <p>Oddziały tworzysz bezpośrednio w rozpisce. Armie są prywatną biblioteką profili, do których możesz wrócić później.</p>
+  </div>
+  <div class="hero-actions">
+    <a class="button button-primary" href="/rosters/new">Nowa rozpiska</a>
+    <a class="button" href="/armies/new">Nowa Armia</a>
+  </div>
+</section>
+
+<div class="dashboard-grid">
+  <section class="panel">
+    <div class="section-heading"><h2>Ostatnie rozpiski</h2><a href="/rosters">Wszystkie</a></div>
+    {% if rosters %}
+      <div class="item-list">
+      {% for row in roster_rows %}{% set roster = row.roster %}
+        <a class="list-row" href="/rosters/{{ roster.id }}">
+          <span><strong>{{ roster.name }}</strong><small>{{ roster.roster_units|length }} wspólnych profili</small></span>
+          <span class="points">{{ row.total_cost }} pkt</span>
+        </a>
+      {% endfor %}
+      </div>
+    {% else %}<p class="empty-state">Nie masz jeszcze rozpiski.</p>{% endif %}
+  </section>
+  <section class="panel">
+    <div class="section-heading"><h2>Twoje Armie</h2><a href="/armies">Wszystkie</a></div>
+    {% if armies %}
+      <div class="item-list">
+      {% for army in armies %}
+        <a class="list-row" href="/armies/{{ army.id }}"><strong>{{ army.name }}</strong><span>Otwórz →</span></a>
+      {% endfor %}
+      </div>
+    {% else %}<p class="empty-state">Armia przyda się, gdy zechcesz zachować profil oddziału.</p>{% endif %}
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+name: opos
+
+services:
+  opos-app:
+    build: .
+    image: ${OPOS_IMAGE:-ghcr.io/rozgladacz/opos:latest}
+    restart: unless-stopped
+    # Brak sekcji "ports" — publiczny dostęp zapewnia osobny stos brama.
+    volumes:
+      - ${OPOS_DATA_DIR:-./data}:/app/data
+      # Docker socket — pozwala panelowi admina na "docker compose pull + up".
+      # Usuń jeśli nie chcesz możliwości aktualizacji przez UI.
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      UPDATE_COMPOSE_FILE: /srv/opos/docker-compose.yml
+      UPDATE_SERVICE_NAME: opos-app
+    env_file:
+      - path: .env
+        required: false   # .env jest opcjonalny — wszystko ma rozsądne defaulty
+    healthcheck:
+      test: ["CMD", "python", "-c",
+             "import urllib.request; urllib.request.urlopen('http://localhost:8000/auth/login')"]
+      interval: 30s
+      timeout: 10s
+      start_period: 20s
+      retries: 3
+    networks:
+      - default
+      - opos-edge
+
+  opos-backup:
+    build: .
+    image: ${OPOS_IMAGE:-ghcr.io/rozgladacz/opos:latest}
+    restart: unless-stopped
+    entrypoint: ["python", "-m", "app.scripts.backup_loop"]
+    volumes:
+      - ${OPOS_DATA_DIR:-./data}:/app/data
+    env_file:
+      - path: .env
+        required: false
+    depends_on:
+      opos-app:
+        condition: service_healthy
+
+networks:
+  opos-edge:
+    external: true
+    name: ${OPOS_EDGE_NETWORK:-brama-opos}

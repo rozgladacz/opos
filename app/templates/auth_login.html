@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Logowanie — OPOS{% endblock %}
+{% block body_class %}auth-page{% endblock %}
+{% block content %}
+<section class="auth-card">
+  <p class="eyebrow">OPOS</p><h1>Zaloguj się</h1>
+  {% if error %}<p class="form-error" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" action="/auth/login" class="stack-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label>Nazwa użytkownika<input name="username" autocomplete="username" required autofocus></label>
+    <label>Hasło<input name="password" type="password" autocomplete="current-password" required></label>
+    <button class="button button-primary" type="submit">Zaloguj</button>
+  </form>
+  <a href="/auth/register">Utwórz konto</a>
+</section>
+{% endblock %}

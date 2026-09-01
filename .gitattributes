@@ -1,0 +1,26 @@
+# Wymuszenie LF dla plików uruchamianych na Linuxie (shell scripts, Docker)
+scripts/docker-entrypoint.sh text eol=lf
+*.sh text eol=lf
+
+# Python — domyślnie LF (konsekwentne między Windows i Linux)
+*.py text eol=lf
+
+# Pliki tekstowe — auto CRLF na Windows, LF na repozytorium
+*.md text
+*.yml text
+*.yaml text
+*.json text
+*.txt text
+*.cfg text
+*.ini text
+Dockerfile text eol=lf
+Caddyfile text eol=lf
+
+# Pliki binarne — bez konwersji
+*.db binary
+*.png binary
+*.jpg binary
+*.ico binary
+*.pdf binary
+*.docx binary
+*.xlsx binary
