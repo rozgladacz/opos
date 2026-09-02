@@ -14,6 +14,8 @@ services:
     environment:
       UPDATE_COMPOSE_FILE: /srv/opos/docker-compose.yml
       UPDATE_SERVICE_NAME: opos-app
+      # Produkcyjny .env powinien wskazywać wyłącznie IP Caddy w sieci opos-edge.
+      FORWARDED_ALLOW_IPS: ${FORWARDED_ALLOW_IPS:-127.0.0.1}
     env_file:
       - path: .env
         required: false   # .env jest opcjonalny — wszystko ma rozsądne defaulty

@@ -16,7 +16,7 @@ OPOS jest niezależnym stosem aplikacyjnym. Publiczne porty, certyfikaty i routi
 mkdir -p /srv/opos
 cd /srv/opos
 cp .env.example .env
-# Ustaw OPOS_IMAGE na konkretny tag wydania i TRUSTED_HOSTS na domenę OPOS.
+# Ustaw OPOS_IMAGE i TRUSTED_HOSTS, a FORWARDED_ALLOW_IPS na IP Caddy w brama-opos.
 docker network inspect brama-opos >/dev/null
 docker compose config --quiet
 docker compose pull opos-app opos-backup
@@ -33,7 +33,13 @@ Nie kopiuj ani nie konwertuj bazy SZOP. Jeśli wdrażasz istniejącą bazę OPOS
 
 ## Dostęp
 
-Kontener nie publikuje portu hosta. Caddy z repo `brama` łączy się z `opos-app:8000` przez sieć `brama-opos`. Ustaw publiczną domenę w `TRUSTED_HOSTS` i pozostaw `SESSION_HTTPS_ONLY=true`.
+Kontener nie publikuje portu hosta. Caddy z repo `brama` łączy się z `opos-app:8000` przez sieć `brama-opos`. Ustaw publiczną domenę w `TRUSTED_HOSTS`, pozostaw `SESSION_HTTPS_ONLY=true` i ustaw `FORWARDED_ALLOW_IPS` na prywatny adres Caddy:
+
+```bash
+docker inspect --format="{{(index .NetworkSettings.Networks \"brama-opos\").IPAddress}}" brama-caddy-1
+```
+
+Dzięki temu Uvicorn honoruje protokół HTTPS przekazany przez Caddy bez ufania nagłówkom proxy od innych kontenerów. Po odtworzeniu sieci lub zmianie adresu Caddy zaktualizuj tę wartość przed uruchomieniem OPOS.
 
 Do lokalnego uruchomienia kontenerowego użyj skryptu `scripts/dev-up.ps1` w repo `brama`. Bez bramy:
 

@@ -1,6 +1,12 @@
 data/
 .dev-data/
 !app/data/
+
+# Konfiguracja środowiskowa i sekrety; w Git pozostaje wyłącznie szablon.
+.env
+.env.*
+!.env.example
+
 *.db
 *.db-journal
 *.sqlite
