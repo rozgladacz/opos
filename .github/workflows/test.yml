@@ -26,4 +26,4 @@ jobs:
         run: pip install -r requirements-dev.txt
 
       - name: Run tests
-        run: pytest -q --tb=short
+        run: python -m pytest -q --tb=short
