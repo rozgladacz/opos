@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, event, inspect, select
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-from .config import DB_URL, INITIAL_ADMIN_PASSWORD
+from .config import DB_URL, get_initial_admin_password
 
 
 logger = logging.getLogger(__name__)
@@ -227,10 +227,11 @@ def init_db() -> None:
             select(models.User).where(models.User.username == "admin")
         ).scalar_one_or_none()
         if admin is None:
+            initial_admin_password = get_initial_admin_password()
             session.add(
                 models.User(
                     username="admin",
-                    password_hash=hash_password(INITIAL_ADMIN_PASSWORD),
+                    password_hash=hash_password(initial_admin_password),
                     is_admin=True,
                 )
             )

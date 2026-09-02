@@ -45,10 +45,15 @@ def _load_or_create_secret(env_name: str, file_name: str) -> str:
     return new_secret
 
 
+def get_initial_admin_password() -> str:
+    """Return the bootstrap password only when a new administrator is created."""
+
+    return _load_or_create_secret(
+        "INITIAL_ADMIN_PASSWORD", ".initial_admin_password"
+    )
+
+
 SECRET_KEY = _load_or_create_secret("SECRET_KEY", ".secret_key")
-INITIAL_ADMIN_PASSWORD = _load_or_create_secret(
-    "INITIAL_ADMIN_PASSWORD", ".initial_admin_password"
-)
 DB_URL = os.getenv("DB_URL", "sqlite:///./data/opos.db")
 DEBUG = os.getenv("DEBUG", "false").lower() in {"1", "true", "yes"}
 OPOS_RULESET_VERSION = os.getenv("OPOS_RULESET_VERSION", "v3")
