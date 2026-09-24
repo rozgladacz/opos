@@ -1,3 +1,5 @@
+FROM docker:29.8.1-cli AS docker-cli
+
 FROM python:3.13-slim
 
 # Metadane wersji — wstrzykiwane przez GitHub Actions przy budowie release
@@ -20,6 +22,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         libpango-1.0-0 \
         libpangocairo-1.0-0 \
     && rm -rf /var/lib/apt/lists/*
+
+# Klient Dockera i Compose są potrzebne wyłącznie do uruchomienia izolowanego
+# kontenera aktualizatora. Demon Dockera pozostaje na hoście.
+COPY --from=docker-cli /usr/local/bin/docker /usr/local/bin/docker
+COPY --from=docker-cli /usr/local/libexec/docker/cli-plugins/docker-compose \
+    /usr/local/libexec/docker/cli-plugins/docker-compose
 
 # Użytkownik nieprivilegowany — UID 1000 jest zgodny z typowymi ustawieniami linuxowymi
 RUN groupadd -g 1000 app && useradd -u 1000 -g app -s /bin/sh -m app

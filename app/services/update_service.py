@@ -3,10 +3,11 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 import subprocess
 from dataclasses import asdict, dataclass
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 from uuid import uuid4
 
@@ -16,7 +17,6 @@ from ..config import (
     APP_VERSION,
     DATA_DIR,
     UPDATE_COMPOSE_FILE,
-    UPDATE_IMAGE,
     UPDATE_REPO_PATH,
     UPDATE_SERVICE_NAME,
 )
@@ -35,6 +35,11 @@ _LOCK_STALE_AFTER = timedelta(hours=1)
 _MAX_STATE_LOG_ENTRIES = 50
 _LOG_MAX_BYTES = 5 * 1024 * 1024  # 5 MB
 _LOG_KEEP_LINES = 1000
+_CONTAINER_ID_FILE = Path("/etc/hostname")
+_CONTAINER_ID_PATTERN = re.compile(r"[0-9a-f]{12,64}")
+_IMAGE_ID_PATTERN = re.compile(r"sha256:[0-9a-f]{64}")
+_SERVICE_NAME_PATTERN = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]*")
+_DOCKER_COMMAND = "/usr/local/bin/docker"
 
 
 class UpdateBlockedError(RuntimeError):
@@ -57,6 +62,10 @@ class UpdateServiceError(RuntimeError):
         self.label = label
         self.output = output
         self.progress = progress
+
+
+class UpdateServiceLaunchError(RuntimeError):
+    """Raised when the detached update worker cannot be started."""
 
 
 @dataclass(frozen=True)
@@ -98,6 +107,7 @@ def _format_remaining(remaining: timedelta) -> str:
 def _write_status(status: UpdateStatus) -> None:
     payload = asdict(status)
     payload["updated_at"] = _now_iso()
+    _STATUS_FILE.parent.mkdir(parents=True, exist_ok=True)
     temp_path = _STATUS_FILE.with_suffix(".tmp")
     temp_path.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     temp_path.replace(_STATUS_FILE)
@@ -215,7 +225,7 @@ def _resolve_update_repo_path() -> Path:
 
 
 def _lock_file_path() -> Path:
-    return _resolve_update_repo_path() / _LOCK_FILENAME
+    return DATA_DIR / _LOCK_FILENAME
 
 
 def _read_lock() -> dict[str, Any] | None:
@@ -248,9 +258,25 @@ def _acquire_lock(task_id: str) -> None:
         fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
     except FileExistsError as exc:
         raise UpdateInProgressError("Aktualizacja już trwa.") from exc
+    except OSError as exc:
+        raise UpdateBlockedError(
+            "Nie można utworzyć blokady aktualizacji w katalogu danych. "
+            "Sprawdź uprawnienia DATA_DIR."
+        ) from exc
     payload = {"task_id": task_id, "started_at": _now_iso()}
-    with os.fdopen(fd, "w", encoding="utf-8") as lock_file:
-        lock_file.write(json.dumps(payload, ensure_ascii=False, indent=2))
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as lock_file:
+            lock_file.write(json.dumps(payload, ensure_ascii=False, indent=2))
+    except OSError as exc:
+        try:
+            os.close(fd)
+        except OSError:
+            pass
+        _release_lock()
+        raise UpdateBlockedError(
+            "Nie można zapisać blokady aktualizacji w katalogu danych. "
+            "Sprawdź uprawnienia DATA_DIR."
+        ) from exc
 
 
 def _release_lock() -> None:
@@ -309,7 +335,14 @@ def claim_update_slot(task_id: str) -> None:
                 f"Zbyt częste uruchamianie aktualizacji. Spróbuj ponownie za {_format_remaining(remaining)}."
             )
     _acquire_lock(task_id)
-    _write_last_run(datetime.now(timezone.utc))
+    try:
+        _write_last_run(datetime.now(timezone.utc))
+    except OSError as exc:
+        _release_lock()
+        raise UpdateBlockedError(
+            "Nie można zapisać stanu aktualizatora w katalogu danych. "
+            "Sprawdź uprawnienia DATA_DIR."
+        ) from exc
 
 
 def release_update_slot() -> None:
@@ -331,6 +364,28 @@ def set_status(
         progress=progress,
     )
     _write_status(payload)
+    return payload
+
+
+def _set_status_best_effort(
+    task_id: str,
+    status: str,
+    detail: str,
+    *,
+    error: str | None = None,
+    progress: int = 0,
+) -> UpdateStatus:
+    payload = UpdateStatus(
+        task_id=task_id,
+        status=status,
+        detail=detail,
+        error=error,
+        progress=progress,
+    )
+    try:
+        _write_status(payload)
+    except OSError:
+        logger.warning("Nie udało się zapisać statusu aktualizacji %s.", status)
     return payload
 
 
@@ -402,12 +457,12 @@ def run_update_service_sequence(task_id: str, *, claim_slot: bool = True) -> Non
             return
 
     try:
-        if not UPDATE_SERVICE_NAME:
+        if not _SERVICE_NAME_PATTERN.fullmatch(UPDATE_SERVICE_NAME):
             set_status(
                 task_id=task_id,
                 status="error",
-                detail="Brak skonfigurowanej nazwy usługi (UPDATE_SERVICE_NAME).",
-                error="UPDATE_SERVICE_NAME nie został ustawiony.",
+                detail="Nieprawidłowa nazwa usługi aktualizowanej.",
+                error="UPDATE_SERVICE_NAME ma niedozwolony format.",
                 progress=0,
             )
             return
@@ -424,7 +479,7 @@ def run_update_service_sequence(task_id: str, *, claim_slot: bool = True) -> Non
             task_id,
             f"Wykonywanie: docker compose pull {UPDATE_SERVICE_NAME}",
             [
-                "docker",
+                _DOCKER_COMMAND,
                 "compose",
                 "-f",
                 UPDATE_COMPOSE_FILE,
@@ -437,7 +492,7 @@ def run_update_service_sequence(task_id: str, *, claim_slot: bool = True) -> Non
             task_id,
             f"Wykonywanie: docker compose up -d {UPDATE_SERVICE_NAME}",
             [
-                "docker",
+                _DOCKER_COMMAND,
                 "compose",
                 "-f",
                 UPDATE_COMPOSE_FILE,
@@ -473,6 +528,151 @@ def run_update_service_sequence(task_id: str, *, claim_slot: bool = True) -> Non
         )
     finally:
         release_update_slot()
+
+
+def _run_docker_launcher(command: list[str]) -> str:
+    try:
+        result = subprocess.run(
+            command,
+            capture_output=True,
+            text=True,
+            errors="replace",
+            check=False,
+            timeout=30,
+        )
+    except (OSError, subprocess.TimeoutExpired) as exc:
+        raise UpdateServiceLaunchError(
+            f"Nie udało się uruchomić procesu Docker: {exc}"
+        ) from exc
+    if result.returncode != 0:
+        output = _format_command_output(result.stdout.strip(), result.stderr.strip())
+        raise UpdateServiceLaunchError(f"Polecenie Docker nie powiodło się. {output}")
+    return result.stdout.strip()
+
+
+def _read_container_id() -> str:
+    try:
+        container_id = _CONTAINER_ID_FILE.read_text(encoding="ascii").strip()
+    except (OSError, UnicodeError) as exc:
+        raise UpdateServiceLaunchError(
+            "Nie można odczytać identyfikatora kontenera aplikacji."
+        ) from exc
+    if not _CONTAINER_ID_PATTERN.fullmatch(container_id):
+        raise UpdateServiceLaunchError("Nieprawidłowy identyfikator kontenera aplikacji.")
+    return container_id
+
+
+def _read_project_directory() -> str:
+    compose_path = PurePosixPath(UPDATE_COMPOSE_FILE)
+    has_forbidden_character = any(
+        character in UPDATE_COMPOSE_FILE for character in (":", "\0", "\n", "\r")
+    )
+    is_unsafe = (
+        not compose_path.is_absolute()
+        or compose_path.parent == PurePosixPath("/")
+        or ".." in compose_path.parts
+        or has_forbidden_character
+    )
+    if is_unsafe:
+        raise UpdateServiceLaunchError(
+            "UPDATE_COMPOSE_FILE musi wskazywać bezpieczną ścieżkę bezwzględną na serwerze."
+        )
+    return str(compose_path.parent)
+
+
+def _read_worker_image(container_id: str) -> str:
+    worker_image = _run_docker_launcher(
+        [_DOCKER_COMMAND, "inspect", "--format={{.Image}}", container_id]
+    )
+    if not _IMAGE_ID_PATTERN.fullmatch(worker_image):
+        raise UpdateServiceLaunchError("Docker zwrócił nieprawidłowy identyfikator obrazu.")
+    return worker_image
+
+
+def _launch_update_service_worker(task_id: str) -> None:
+    if not _SERVICE_NAME_PATTERN.fullmatch(UPDATE_SERVICE_NAME):
+        raise UpdateServiceLaunchError("Nieprawidłowa nazwa usługi aktualizowanej.")
+
+    container_id = _read_container_id()
+    project_dir = _read_project_directory()
+    worker_image = _read_worker_image(container_id)
+
+    worker_name = f"opos-update-{task_id[:12]}"
+    command = [
+        _DOCKER_COMMAND,
+        "run",
+        "--detach",
+        "--rm",
+        "--name",
+        worker_name,
+        "--network",
+        "none",
+        "--volumes-from",
+        container_id,
+        "--volume",
+        f"{project_dir}:{project_dir}:ro",
+        "--env",
+        f"DATA_DIR={DATA_DIR.resolve()}",
+        "--env",
+        f"UPDATE_COMPOSE_FILE={UPDATE_COMPOSE_FILE}",
+        "--env",
+        f"UPDATE_REPO_PATH={project_dir}",
+        "--env",
+        f"UPDATE_SERVICE_NAME={UPDATE_SERVICE_NAME}",
+        worker_image,
+        "python",
+        "-m",
+        "app.scripts.update_once",
+        task_id,
+    ]
+    worker_id = _run_docker_launcher(command)
+    if not _CONTAINER_ID_PATTERN.fullmatch(worker_id):
+        raise UpdateServiceLaunchError("Docker zwrócił nieprawidłowy identyfikator zadania.")
+
+
+def queue_update_service() -> UpdateStatus:
+    """Queue a detached worker which may safely replace the application container."""
+
+    task_id = uuid4().hex
+    try:
+        claim_update_slot(task_id)
+    except UpdateBlockedError as exc:
+        return _set_status_best_effort(
+            task_id=task_id,
+            status="blocked",
+            detail=str(exc),
+            progress=0,
+        )
+
+    try:
+        status = set_status(
+            task_id=task_id,
+            status="queued",
+            detail="Zadanie oczekuje na uruchomienie.",
+            progress=0,
+        )
+    except OSError as exc:
+        release_update_slot()
+        return UpdateStatus(
+            task_id=task_id,
+            status="error",
+            detail="Nie można zapisać statusu aktualizacji.",
+            error=str(exc),
+            progress=0,
+        )
+    try:
+        _launch_update_service_worker(task_id)
+    except UpdateServiceLaunchError as exc:
+        logger.error("Nie udało się uruchomić aktualizatora: %s", exc)
+        release_update_slot()
+        return _set_status_best_effort(
+            task_id=task_id,
+            status="error",
+            detail="Nie udało się uruchomić aktualizatora.",
+            error=str(exc),
+            progress=0,
+        )
+    return status
 
 
 def queue_update(background_tasks: BackgroundTasks, ref: str | None = None, tag: str | None = None) -> UpdateStatus:

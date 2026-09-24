@@ -64,7 +64,6 @@ UPDATE_REF = os.getenv("UPDATE_REF", "")
 UPDATE_DOCKERFILE = os.getenv("UPDATE_DOCKERFILE", "Dockerfile")
 UPDATE_COMPOSE_FILE = os.getenv("UPDATE_COMPOSE_FILE", "docker-compose.yml")
 UPDATE_SERVICE_NAME = os.getenv("UPDATE_SERVICE_NAME", "opos-app")
-UPDATE_IMAGE = os.getenv("UPDATE_IMAGE", "ghcr.io/rozgladacz/opos:latest")
 UPDATE_WEBHOOK_TOKEN = _load_or_create_secret("UPDATE_WEBHOOK_TOKEN", ".webhook_token")
 APP_VERSION = os.getenv("APP_VERSION", "dev")
 

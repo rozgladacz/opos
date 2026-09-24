@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import secrets
-from uuid import uuid4
 from urllib.parse import quote_plus
 
 from fastapi import APIRouter, BackgroundTasks, Body, Depends, Form, HTTPException, Request, status
@@ -97,17 +96,14 @@ def trigger_update(
 ) -> RedirectResponse:
     _require_admin(current_user)
     validate_csrf(request, csrf_token)
-    task_id = uuid4().hex
     logger.info(
         "Aktualizacja usługi uruchomiona przez użytkownika %s",
         current_user.username,
     )
-    update_service.run_update_service_sequence(task_id)
-    status_payload = update_service.read_status() or {}
-    status_value = status_payload.get("status")
-    detail = status_payload.get("detail") or status_payload.get("error")
-    if status_value == "success":
-        message = detail or "Usługa została zaktualizowana."
+    status_payload = update_service.queue_update_service()
+    detail = status_payload.detail or status_payload.error
+    if status_payload.status == "queued":
+        message = detail or "Aktualizacja została uruchomiona."
         redirect_url = f"/admin?status=update-ok&detail={quote_plus(message)}"
     else:
         error_detail = detail or "Aktualizacja usługi nie powiodła się."
@@ -115,34 +111,8 @@ def trigger_update(
     return RedirectResponse(url=redirect_url, status_code=status.HTTP_303_SEE_OTHER)
 
 
-def _queue_update_service_sequence(background_tasks: BackgroundTasks) -> update_service.UpdateStatus:
-    task_id = uuid4().hex
-    try:
-        update_service.claim_update_slot(task_id)
-    except update_service.UpdateBlockedError as exc:
-        return update_service.set_status(
-            task_id=task_id,
-            status="blocked",
-            detail=str(exc),
-            progress=0,
-        )
-    status_payload = update_service.set_status(
-        task_id=task_id,
-        status="queued",
-        detail="Zadanie oczekuje na uruchomienie.",
-        progress=0,
-    )
-    background_tasks.add_task(
-        update_service.run_update_service_sequence,
-        task_id,
-        claim_slot=False,
-    )
-    return status_payload
-
-
 @router.post("/update-job", dependencies=[Depends(require_csrf)])
 def trigger_update_job(
-    background_tasks: BackgroundTasks,
     payload: UpdatePayload | None = Body(default=None),
     current_user: models.User = Depends(current_user_dep),
 ) -> dict[str, str | None]:
@@ -152,9 +122,14 @@ def trigger_update_job(
         "Aktualizacja usługi (API) uruchomiona przez użytkownika %s",
         current_user.username,
     )
-    status_payload = _queue_update_service_sequence(background_tasks)
+    status_payload = update_service.queue_update_service()
     if status_payload.status == "blocked":
         raise HTTPException(status_code=429, detail=status_payload.detail)
+    if status_payload.status == "error":
+        raise HTTPException(
+            status_code=503,
+            detail=status_payload.error or status_payload.detail,
+        )
     target = payload.ref or (f"tag {payload.tag}" if payload.tag else None)
     return {
         "status": status_payload.status,
@@ -166,7 +141,6 @@ def trigger_update_job(
 
 @router.post("/update-start", dependencies=[Depends(require_csrf)])
 def trigger_update_start(
-    background_tasks: BackgroundTasks,
     payload: UpdatePayload | None = Body(default=None),
     current_user: models.User = Depends(current_user_dep),
 ) -> dict[str, str | None]:
@@ -176,7 +150,7 @@ def trigger_update_start(
         "Aktualizacja usługi (API) uruchomiona przez użytkownika %s",
         current_user.username,
     )
-    status_payload = _queue_update_service_sequence(background_tasks)
+    status_payload = update_service.queue_update_service()
     target = payload.ref or (f"tag {payload.tag}" if payload.tag else None)
     return {
         "status": status_payload.status,
