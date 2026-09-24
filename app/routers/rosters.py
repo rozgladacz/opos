@@ -41,12 +41,14 @@ from ..services.opos_units import (
     template_requires_custom_stats,
     update_template_from_roster_unit,
 )
+from ..services.unit_emblems import UNIT_EMBLEMS
 
 
 router = APIRouter(prefix="/rosters", tags=["rosters"])
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
 templates.env.filters["stat"] = display_number
 templates.env.globals["display_stat"] = format_stat_value
+templates.env.globals["unit_emblems"] = UNIT_EMBLEMS
 current_user_dep = get_current_user()
 
 
@@ -167,6 +169,7 @@ def _roster_unit_payload(
         "id": unit.id,
         "source_template_id": unit.source_template_id,
         "name": unit.name,
+        "emblem": unit.emblem,
         "models_per_unit": unit.models_per_unit,
         "unit_copies": unit.unit_copies,
         "defense": display_number(
@@ -524,6 +527,7 @@ def duplicate_roster(
             models.RosterUnit(
                 source_template_id=item.source_template_id,
                 name=item.name,
+                emblem=item.emblem,
                 models_per_unit=item.models_per_unit,
                 unit_copies=item.unit_copies,
                 defense=item.defense,
@@ -696,6 +700,7 @@ def duplicate_roster_unit(
         source_template_id=source.source_template_id,
         name=f"{source.name} — kopia"[:120],
         models_per_unit=source.models_per_unit,
+        emblem=source.emblem,
         unit_copies=source.unit_copies,
         defense=source.defense,
         toughness=source.toughness,

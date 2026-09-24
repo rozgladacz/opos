@@ -16,6 +16,8 @@
   const dialog = document.getElementById("unit-dialog");
   dialog.classList.toggle("is-compact", collapseDescriptions);
   const form = document.getElementById("unit-form");
+  const emblemToggle = document.getElementById("emblem-toggle");
+  const emblemOptions = document.getElementById("emblem-options");
   const units = JSON.parse(document.getElementById("units-data").textContent || "[]");
   const ranges = ["melee", "short", "long"];
   let ruleset = null;
@@ -102,6 +104,7 @@
       : ruleset.standard_stats.toughness;
     return {
       name: "",
+      emblem: null,
       models_per_unit: 1,
       unit_copies: 1,
       defense: ruleset.standard_stats.defense[0],
@@ -118,6 +121,11 @@
 
   function buildForm(unit) {
     document.getElementById("unit-name").value = unit.name;
+    emblemOptions.querySelectorAll("input").forEach((input) => {
+      input.checked = input.value === (unit.emblem || "");
+    });
+    updateEmblemPreview();
+    setEmblemOptionsOpen(false);
     document.getElementById("models-per-unit").value = unit.models_per_unit;
     document.getElementById("unit-copies").value = unit.unit_copies;
 
@@ -255,6 +263,7 @@
     });
     return {
       name: document.getElementById("unit-name").value.trim() || "Oddział",
+      emblem: emblemOptions.querySelector("input:checked")?.value || null,
       models_per_unit: Number(document.getElementById("models-per-unit").value),
       unit_copies: Number(document.getElementById("unit-copies").value),
       defense: document.getElementById("defense").value,
@@ -362,13 +371,42 @@
     }
   }
 
+  function updateEmblemPreview() {
+    const selected = emblemOptions.querySelector("input:checked");
+    emblemToggle.replaceChildren(icon(`emblem-${selected?.value || "none"}`));
+    emblemToggle.setAttribute("aria-label", `Zmień symbol oddziału: ${selected?.getAttribute("aria-label") || "Brak symbolu"}`);
+  }
+
+  function setEmblemOptionsOpen(open) {
+    emblemOptions.hidden = !open;
+    emblemToggle.setAttribute("aria-expanded", String(open));
+  }
+
+  emblemToggle.addEventListener("click", () => {
+    setEmblemOptionsOpen(emblemOptions.hidden);
+    if (!emblemOptions.hidden) emblemOptions.querySelector("input:checked")?.focus();
+  });
+  dialog.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !emblemOptions.hidden) {
+      event.preventDefault();
+      setEmblemOptionsOpen(false);
+      emblemToggle.focus();
+    }
+  });
+
   form.addEventListener("change", (event) => {
+    if (event.target.name === "emblem") {
+      updateEmblemPreview();
+      return;
+    }
     const targetedSpecial = targetedSpecialDefinition();
     if (targetedSpecial && event.target.matches(`input[name="special"][value="${targetedSpecial.slug}"]`)) toggleAuraTarget();
     refreshAbilityConflicts();
     requestQuote();
   });
-  form.addEventListener("input", requestQuote);
+  form.addEventListener("input", (event) => {
+    if (event.target.name !== "emblem") requestQuote();
+  });
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;

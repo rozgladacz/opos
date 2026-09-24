@@ -22,7 +22,13 @@ html, body { margin: 0; color: #141b19; font-family: "DejaVu Sans", sans-serif; 
 .card-kicker { display: block; margin-bottom: .5mm; color: #176b5b; font-size: 6.5pt; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .card-header h1 { margin: 0; font-size: 18pt; line-height: 1.02; }
 .card-title h1 { overflow-wrap: anywhere; }
+.card-name-with-emblem { display: flex; align-items: center; gap: 1.5mm; }
+.card-name-with-emblem > span:last-child { min-width: 0; }
+.card-emblem { display: block; width: 9mm; height: 9mm; flex: 0 0 9mm; }
 .card-title.is-long h1 { font-size: 14pt; line-height: 1.05; }
+.card-header.has-long-title { flex-wrap: wrap; gap: 1.5mm; }
+.card-header.has-long-title .card-title { flex: 0 0 100%; }
+.card-header.has-long-title .card-cost-group { margin-left: auto; }
 .card-cost-group { display: flex; align-items: center; gap: 1.2mm; flex: 0 0 auto; }
 .card-models .card-icon-wrap { width: 10.5mm; height: 10.5mm; }
 .card-models .card-icon-value { font-size: 8.5pt; }

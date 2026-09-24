@@ -254,6 +254,7 @@ def replace_template(
     )
     apply_request_to_roster_unit(transient, request, quote)
     template.name = transient.name
+    template.emblem = transient.emblem
     template.models_per_unit = transient.models_per_unit
     template.defense = transient.defense
     template.toughness = transient.toughness

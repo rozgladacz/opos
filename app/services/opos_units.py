@@ -28,6 +28,7 @@ OPOS_V3_1_USER_VERSION = 30100
 
 class UnitSnapshot(Protocol):
     name: str
+    emblem: str | None
     models_per_unit: int
     defense: object
     toughness: object
@@ -55,6 +56,7 @@ def request_from_snapshot(
     return UnitQuoteInput.model_validate(
         {
             "name": snapshot.name,
+            "emblem": snapshot.emblem,
             "models_per_unit": snapshot.models_per_unit,
             "unit_copies": unit_copies,
             "defense": snapshot.defense,
@@ -277,6 +279,7 @@ def _snapshot_values(request: UnitQuoteInput) -> dict[str, object]:
     request = canonicalize_unit_input(request)
     return {
         "name": request.name,
+        "emblem": request.emblem,
         "models_per_unit": request.models_per_unit,
         "defense": request.defense,
         "toughness": request.toughness,
@@ -310,6 +313,7 @@ def create_template_from_roster_unit(
         army=army,
         owner_id=army.owner_id,
         name=roster_unit.name,
+        emblem=roster_unit.emblem,
         models_per_unit=roster_unit.models_per_unit,
         defense=roster_unit.defense,
         toughness=roster_unit.toughness,
@@ -328,6 +332,7 @@ def update_template_from_roster_unit(
     ruleset_version: str,
 ) -> None:
     template.name = roster_unit.name
+    template.emblem = roster_unit.emblem
     template.models_per_unit = roster_unit.models_per_unit
     template.defense = roster_unit.defense
     template.toughness = roster_unit.toughness

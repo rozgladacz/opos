@@ -111,6 +111,22 @@ def ensure_roster_mode_columns(bind: Engine) -> None:
                 )
 
 
+def ensure_unit_emblem_columns(bind: Engine) -> None:
+    """Add optional emblems to existing OPOS snapshots, including backups."""
+    if bind.dialect.name != "sqlite":
+        return
+    inspector = inspect(bind)
+    tables = set(inspector.get_table_names())
+    for table in ("unit_templates", "roster_units"):
+        if table in tables and "emblem" not in {
+            column["name"] for column in inspector.get_columns(table)
+        }:
+            with bind.begin() as connection:
+                connection.exec_driver_sql(
+                    f"ALTER TABLE {table} ADD COLUMN emblem VARCHAR(24)"
+                )
+
+
 def ensure_user_preference_columns(bind: Engine) -> None:
     """Add per-user defaults used by the new-roster form."""
     if bind.dialect.name != "sqlite":
@@ -186,6 +202,7 @@ def upgrade_opos_database(bind: Engine) -> int:
     assert_not_legacy_szop_database(bind)
     ensure_roster_mode_columns(bind)
     ensure_user_preference_columns(bind)
+    ensure_unit_emblem_columns(bind)
     Base.metadata.create_all(bind=bind)
     local_session = sessionmaker(
         bind=bind, autoflush=False, autocommit=False, future=True

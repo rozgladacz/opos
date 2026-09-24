@@ -6,6 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from ..unit_emblems import validate_emblem
 from .loader import load_opos_ruleset
 from .models import AbilityDefinition, OposRuleset, RangeSlug
 from .notation import canonical_stat_value
@@ -73,6 +74,7 @@ class UnitQuoteInput(BaseModel):
     model_config = _INPUT_CONFIG
 
     name: str = Field(default="Oddział", min_length=1, max_length=120)
+    emblem: str | None = Field(default=None, max_length=24)
     models_per_unit: int = Field(ge=1, le=999)
     unit_copies: int = Field(default=1, ge=1, le=999)
     defense: Decimal
@@ -84,6 +86,8 @@ class UnitQuoteInput(BaseModel):
     points_scale: int = Field(default=1, ge=1, le=1_000_000)
     small_battle_enabled: bool = False
     shield_fist_enabled: bool = False
+
+    _validate_emblem = field_validator("emblem")(validate_emblem)
 
     @field_validator("name")
     @classmethod

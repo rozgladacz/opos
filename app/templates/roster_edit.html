@@ -28,7 +28,7 @@
     {% for row in unit_rows %}{% set unit = row.unit %}
       <article class="unit-row" data-unit-id="{{ unit.id }}">
         <div class="unit-row-main">
-          <h3>{{ unit.name }}</h3>
+          <h3 class="unit-name-with-emblem">{% if unit.emblem %}{{ icon("emblem-" ~ unit.emblem, class_name="unit-emblem") }}{% endif %}<span>{{ unit.name }}</span></h3>
           <div class="stat-line">{{ icon('defense',row.defense_label ~ ' ' ~ row.defense,row.defense) }}{{ icon('toughness','Życie ' ~ row.toughness,row.toughness) }}{{ icon('models','Liczebność ' ~ unit.models_per_unit,unit.models_per_unit) }}<span>modeli × {{ unit.unit_copies }} oddz.</span></div>
         </div>
         <div class="cost-stack"><strong>{{ row.unit_cost }} pkt</strong><small>łącznie {{ row.entry_cost }}</small></div>
@@ -55,7 +55,7 @@
   <aside class="library-column" aria-labelledby="library-title">
     <div class="library-tools"><strong><span id="sticky-roster-total">{{ total_cost }}</span> pkt{% if display_points_limit is not none %} / {{ display_points_limit }}{% endif %}</strong><div class="row-actions"><button class="button button-primary" id="add-unit" type="button">Dodaj oddział</button><a class="button" href="/rosters/{{ roster.id }}/cards">Karty</a><a class="button" href="/rosters/{{ roster.id }}/cards.pdf">PDF</a></div></div>
     <div class="section-heading library-army-heading"><form method="post" action="/rosters/{{ roster.id }}/army" class="library-army-form"><input type="hidden" name="csrf_token" value="{{ csrf_token }}"><label for="roster-army-select"><span id="library-title">Dodaj z armii</span><select id="roster-army-select" name="army_id"><option value="">— wybierz —</option>{% for army in armies %}<option value="{{ army.id }}" {% if army.id == roster.army_id %}selected{% endif %}>{{ army.name }}</option>{% endfor %}</select></label></form></div>
-    {% if army_templates %}<div class="library-templates">{% for template in army_templates %}<div class="library-template-row" data-template-row><button class="template-pick js-add-template" type="button" data-template-id="{{ template.id }}"><strong>{{ template.name }}</strong><span>{{ template.models_per_unit }} modeli · {% if shield_fist_enabled %}T {{ display_stat('defense', template.defense, shield_fist_enabled=true) }}{% else %}Z {{ template.defense|stat }}{% endif %} · Ż {{ template.toughness|stat }}</span></button><button class="template-delete js-delete-template" type="button" data-army-id="{{ roster.army.id }}" data-template-id="{{ template.id }}" aria-label="Usuń szablon {{ template.name }}" title="Usuń szablon">×</button></div>{% endfor %}</div>
+    {% if army_templates %}<div class="library-templates">{% for template in army_templates %}<div class="library-template-row" data-template-row><button class="template-pick js-add-template" type="button" data-template-id="{{ template.id }}"><strong class="unit-name-with-emblem">{% if template.emblem %}{{ icon("emblem-" ~ template.emblem, class_name="unit-emblem") }}{% endif %}<span>{{ template.name }}</span></strong><span>{{ template.models_per_unit }} modeli · {% if shield_fist_enabled %}T {{ display_stat('defense', template.defense, shield_fist_enabled=true) }}{% else %}Z {{ template.defense|stat }}{% endif %} · Ż {{ template.toughness|stat }}</span></button><button class="template-delete js-delete-template" type="button" data-army-id="{{ roster.army.id }}" data-template-id="{{ template.id }}" aria-label="Usuń szablon {{ template.name }}" title="Usuń szablon">×</button></div>{% endfor %}</div>
     {% elif roster.army %}<p class="empty-state">Ta Armia nie ma jeszcze szablonów.</p>{% else %}<p class="empty-state">Wybierz armię z listy powyżej, aby używać jej biblioteki.</p>{% endif %}
   </aside>
 </div>
@@ -64,12 +64,21 @@
   <form id="unit-form" method="dialog">
     <header class="dialog-header"><div><p class="eyebrow">Wspólny profil</p><h2 id="unit-dialog-title">Dodaj oddział</h2></div><button class="icon-button" id="close-unit-dialog" type="button" aria-label="Zamknij">×</button></header>
     <div class="unit-form-grid">
-      <label class="span-2">Nazwa<input id="unit-name" maxlength="120" required></label>
+      <div class="span-2 unit-name-field">
+        <label>Nazwa<input id="unit-name" maxlength="120" required></label>
+        <button id="emblem-toggle" class="emblem-toggle" type="button" aria-label="Wybierz symbol oddziału" aria-controls="emblem-options" aria-expanded="false">{{ icon('emblem-none') }}</button>
+      </div>
+
       <label>Modele / oddział<input id="models-per-unit" type="number" min="1" max="999" value="1" required></label>
       <label>Liczba kopii<input id="unit-copies" type="number" min="1" max="999" value="1" required></label>
       <label><span id="defense-label">{% if shield_fist_enabled %}Tarcza{% else %}Zbroja{% endif %}</span><div id="defense-field"></div></label>
       <label>Życie<div id="toughness-field"></div></label>
     </div>
+    <fieldset id="emblem-options" class="emblem-grid" hidden>
+      <legend class="sr-only">Symbol oddziału</legend>
+      <label class="emblem-option"><input type="radio" name="emblem" value="" aria-label="Brak symbolu" checked>{{ icon('emblem-none') }}</label>
+      {% for slug, label in unit_emblems.items() %}<label class="emblem-option"><input type="radio" name="emblem" value="{{ slug }}" aria-label="{{ label }}">{{ icon('emblem-' ~ slug) }}</label>{% endfor %}
+    </fieldset>
     <details class="editor-section ability-section" open><summary>Zdolności pasywne</summary><div id="passive-options" class="ability-grid"></div></details>
     <details class="editor-section ability-section" open><summary>Zdolności specjalne</summary><div id="special-options" class="ability-grid"></div><label id="aura-target-field" class="aura-target" hidden>Cel Aury<select id="aura-target"></select></label></details>
     <details class="editor-section profiles-section" open><summary>Profile ataku</summary><div id="profile-editors" class="profile-editors"></div></details>
@@ -80,4 +89,4 @@
 
 <script id="units-data" type="application/json">{{ units_payload|tojson }}</script>
 {% endblock %}
-{% block scripts %}<script src="{{ url_for('static', path='js/opos_editor.js') }}?v=opos-v3.2" defer></script>{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', path='js/opos_editor.js') }}?v=opos-v3.3" defer></script>{% endblock %}

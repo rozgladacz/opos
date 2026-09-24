@@ -98,6 +98,7 @@ class UnitTemplate(TimestampMixin, Base):
         ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
     )
     name: Mapped[str] = mapped_column(String(120), nullable=False)
+    emblem: Mapped[Optional[str]] = mapped_column(String(24), nullable=True)
     models_per_unit: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     defense: Mapped[Decimal] = mapped_column(Numeric(10, 3), nullable=False)
     toughness: Mapped[Decimal] = mapped_column(Numeric(10, 3), nullable=False)
@@ -180,6 +181,7 @@ class RosterUnit(TimestampMixin, Base):
         index=True,
     )
     name: Mapped[str] = mapped_column(String(120), nullable=False)
+    emblem: Mapped[Optional[str]] = mapped_column(String(24), nullable=True)
     models_per_unit: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     unit_copies: Mapped[int] = mapped_column(Integer, nullable=False, default=1)
     defense: Mapped[Decimal] = mapped_column(Numeric(10, 3), nullable=False)

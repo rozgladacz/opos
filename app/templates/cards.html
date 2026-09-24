@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Karty — {{ roster.name }}</title>
-  <link rel="stylesheet" href="{{ asset_base }}/css/cards.css{% if not is_pdf %}?v=opos-v3.1{% endif %}">
+  <link rel="stylesheet" href="{{ asset_base }}/css/cards.css{% if not is_pdf %}?v=opos-v3.3{% endif %}">
 </head>
 <body>
   {% if not is_pdf %}<header class="screen-toolbar"><div><strong>{{ roster.name }}</strong><span>Podgląd A4 poziomo · 2 × 2 karty</span></div><nav><a href="/rosters/{{ roster.id }}">Wróć do rozpiski</a><a class="primary" href="/rosters/{{ roster.id }}/cards.pdf">Otwórz PDF</a></nav></header>{% endif %}

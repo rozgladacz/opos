@@ -16,6 +16,7 @@ Na systemie z `make`: `make check`.
 - `test_opos_api.py`, `test_opos_csrf.py` — kontrakty endpointów, server-side recalc, IDOR i CSRF.
 - `test_opos_cards.py`, `test_opos_pdf_security.py` — liczba kart, kontynuacje, brak liczebności i bezpieczne zasoby.
 - `test_opos_drift.py` — DOCX↔PDF↔YAML↔SVG.
+- `test_unit_emblems.py` — 28 symboli, zapis i kopiowanie, brak wpływu na cenę, migracja starszych baz i backupów, karty kontynuacyjne oraz długie nazwy.
 - `test_opos_api.py` — budżety zapytań i scenariusz 12 profili z wieloma kopiami.
 
 ## Smoke UI

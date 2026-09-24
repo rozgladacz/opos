@@ -16,6 +16,8 @@ Logika kosztów żyje wyłącznie w `app/services/opos_rules/`. Routery, modele 
 
 Kopiowanie szablonu do rozpiski jest jednokierunkowe. Późniejsze zmiany nie propagują się. „Aktualizuj szablon” jest osobną, jawną mutacją.
 
+Oddział i szablon przechowują opcjonalny identyfikator `emblem`. Katalog 28 znaków identyfikacyjnych znajduje się w `app/services/unit_emblems.py`, a geometria w symbolach `icon-emblem-*` wspólnego sprite'a SVG. To metadane prezentacji, bez wpływu na zasady i cenę. Symbol jest kopiowany razem ze snapshotem; `null` oznacza brak znaku. Inicjalizacja SQLite i odtwarzanie starszych backupów dodają nullable kolumny, dostępna jest też migracja Alembic.
+
 ## Przepływ quote i zapisu
 
 1. Klient wysyła statystyki do `POST /quote` bez identyfikatora encji.
@@ -35,6 +37,8 @@ Profile z zerem kości są nieaktywne. Standardowe statystyki są ograniczone li
 ## Eksport kart
 
 `app/templates/partials/cards_sheet.html` jest wspólnym partialem HTML/PDF. Ikony pochodzą z jednego sprite’a SVG i są rozwijane inline dla renderera PDF. Jedna karta odpowiada jednemu wspólnemu profilowi niezależnie od liczby kopii. Nadmiar zdolności tworzy karty kontynuacyjne.
+
+Symbol identyfikacyjny pojawia się przed nazwą także na kontynuacjach. Nazwy dłuższe niż 40 znaków otrzymują osobny wiersz nagłówka; karta główna mieści wtedy o dwie zdolności mniej, a pozostałe trafiają na kontynuację. Plansza znaków bez podpisów: `docs/design/unit-emblems.svg`.
 
 ## Wydajność
 

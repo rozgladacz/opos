@@ -167,11 +167,15 @@ def build_unit_cards(
         small_battle_enabled=small_battle_enabled,
     )
     primary_limit = max(PRIMARY_ABILITY_LIMIT - len(attack_abilities), 0)
+    if len(unit.name) > 40:
+        # The full-width title and stats occupy two rows in the printed header.
+        primary_limit = max(primary_limit - 2, 0)
     continuation_limit = CONTINUATION_ABILITY_LIMIT
     cards: list[dict[str, object]] = [
         {
             "kind": "profile",
             "name": unit.name,
+            "emblem": unit.emblem,
             "unit_cost": scale_points(unit.unit_cost, points_scale),
             "models_per_unit": unit.models_per_unit,
             "defense": format_stat_value(
@@ -198,6 +202,7 @@ def build_unit_cards(
             {
                 "kind": "continuation",
                 "name": unit.name,
+                "emblem": unit.emblem,
                 "unit_cost": scale_points(unit.unit_cost, points_scale),
                 "models_per_unit": unit.models_per_unit,
                 "abilities": remaining[start : start + continuation_limit],
